@@ -600,3 +600,53 @@ body {
   50% { box-shadow: 0 0 25px rgba(255, 232, 127, 0.9); }
   100% { box-shadow: 0 0 15px rgba(255, 232, 127, 0.6); }
 }
+
+/* TMI 모달 전용 스타일 */
+.tmi-modal {
+  width: 90%;
+  max-width: 450px;
+  max-height: 80vh; /* 화면 높이의 80%까지만 커짐 */
+  display: flex;
+  flex-direction: column;
+}
+
+.tmi-title {
+  font-family: 'Georgia', serif;
+  font-style: italic;
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+}
+
+/* 스크롤 박스 */
+.tmi-scroll-container {
+  flex: 1;
+  overflow-y: auto; /* 세로 스크롤 활성화 */
+  padding-right: 10px;
+  text-align: left; /* TMI 내용은 왼쪽 정렬이 읽기 편함 */
+  margin-bottom: 20px;
+}
+
+/* 스크롤바 디자인 (세련되게) */
+.tmi-scroll-container::-webkit-scrollbar {
+  width: 5px;
+}
+.tmi-scroll-container::-webkit-scrollbar-thumb {
+  background: rgba(255, 232, 127, 0.5);
+  border-radius: 10px;
+}
+
+.tmi-item {
+  color: #e8f4ff;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  margin-bottom: 25px; /* 항목 간 간격 */
+  white-space: pre-wrap; /* \n 줄바꿈 반영 */
+  border-bottom: 1px solid rgba(255, 232, 127, 0.1);
+  padding-bottom: 15px;
+}
+
+.tmi-item:last-child {
+  border-bottom: none;
+  color: #ffe87f; /* 마지막 혜솔이 메시지 강조 */
+  font-weight: bold;
+}

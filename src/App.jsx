@@ -161,6 +161,19 @@ const dailyMessages = {
   19: "지금 그대로도 충분히 멋집니다."
 };
 
+const gaeunTmiList = [
+  "1. 가은이는 고딩 때 비공식 성우로 활동한 적이 있다. \n(정말 “비공식”임)",
+  "2. 가은이가 먹을 수 있는 오이 요리는 피클과 오이짠지무침 뿐이다. \n(무려 2개나 있음ㄷㄷ)",
+  "3. 가은이는 소문난 문구 덕후이다. \n(근데 이제 한 명만 알고 있는)",
+  "4. 가은이는 구름 한 점 없는 푸른 하늘의 날씨를 좋아한다. \n(정말 구름 1도 없어야 한다)",
+  "5. 가은이가 초딩 때 수학 교과서에 있는 정의를 한 글자도 틀리지 않고 말한 적이 있다. \n(근데 지금은 기억력 왜 이 모양)",
+  "6. 가은이는 방송부를 하며 매주 화요일마다 반에 늦게 들어갔다. \n(종 친 후에 들어가 문을 열면 모든 친구들이 나를 돌아보는 삶, 이게 슈스지 뭐야. 아마 이때부터 약간 관종이 된 게 아닐까 싶다)",
+  "7. 가은이는 비 오는 날에 우산 안 쓰고 다니는 걸 좋아한다. \n(하지만 미친 여자처럼 보일까봐 자제 중이다)",
+  "8. 가은이는 이미 웨딩드레스와 웨딩홀을 확정 지어놨다. \n(물론 예약금 안 넣었다 아직은. 비커즈...유 노 왓 암 생?)",
+  "9. 가은이는 패션 리더가 되고 싶어하며 실제로 크롭티 유행의 선두자다. \n(고딩 때는 친구들의 코디로 일한 적이 있다. 이 또한 “비공식”이다. 특히 사이즈 문의 필요하면 언제나 환영)",
+  "10. 가은이는 지금 혜솔이가 보고 싶다."
+];
+
 // 사진 파일 목록
 // [Vite 버전으로 수정된 이미지 목록]
 const myPhotos = [
@@ -180,6 +193,15 @@ useEffect(() => {
     img.src = src; // 브라우저가 이 코드를 읽는 순간 미리 사진을 다운로드합니다.
   });
 }, []);
+
+// 심심할 때-TMI
+const [showTmiModal, setShowTmiModal] = useState(false);
+
+// 기존 handleTMI 수정
+const handleTMI = () => { 
+    setShowTmiModal(true);
+    setShowBoredMenu(false); 
+};
 
   const [activeStar, setActiveStar] = useState(null);
   const [lastActiveStar, setLastActiveStar] = useState(null);
@@ -423,9 +445,6 @@ useEffect(() => {
   const handleBalanceGame = () => { 
       console.log("밸런스 게임 버튼 클릭"); 
   };
-  const handleTMI = () => { 
-      console.log("TMI 버튼 클릭"); 
-  };
   const handleKaraoke = () => { 
       console.log("노래방 버튼 클릭"); 
   };
@@ -658,6 +677,22 @@ useEffect(() => {
                여기가 바로<br/>퀸크루즈 노래연습장
              </button>
            </div>
+        </div>
+      )}
+
+      {showTmiModal && (
+        <div className="hidden-modal active tmi-modal">
+          <div className="hidden-text tmi-title">Gaeun's TMI List</div>
+          <div className="tmi-scroll-container">
+            {gaeunTmiList.map((tmi, index) => (
+              <div key={index} className="tmi-item">
+                {tmi}
+              </div>
+            ))}
+          </div>
+          <div className="hidden-buttons">
+            <button onClick={() => setShowTmiModal(false)}>다 읽었어!</button>
+          </div>
         </div>
       )}
 
