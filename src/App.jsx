@@ -161,6 +161,24 @@ const dailyMessages = {
   19: "지금 그대로도 충분히 멋집니다."
 };
 
+const balanceGameList = [
+  { id: 1, q1: "웃음 참아야 할 상황에서만 터짐", q2: "웃어도 되는 상황에서만 웃음 안 나옴" },
+  { id: 2, q1: "평생 양말이 항상 한 짝씩만 사라짐", q2: "양말은 멀쩡한데 신발에서 항상 삑삑 소리남" },
+  { id: 3, q1: "재채기할 때마다 이상한 소리 나옴 (랜덤)", q2: "하품하면 눈물이 오열하듯이 나옴" },
+  { id: 4, q1: "사람들이 내 농담을 10초 후에 이해함", q2: "바로 이해하는데 아무도 안 웃음" },
+  { id: 5, q1: "회의 때 한 말만 꼭 밈으로 돌아다님", q2: "아무 말도 안 했는데 내 이름이 밈이 됨" },
+  { id: 6, q1: "잠꼬대가 항상 인생 명언", q2: "말실수하면 항상 랩처럼 라임 맞음" },
+  { id: 7, q1: "연인이 나를 볼 때마다 자동으로 함박웃음(무음)", q2: "내 이름만 불러도 얼굴 빨개짐" },
+  { id: 8, q1: "싸워도 먼저 사과하면서 ‘그래도 사랑해’ 덧붙임", q2: "사과는 안 하는데 이불 같이 덮고 자자고 함" },
+  { id: 9, q1: "연인이 내 손잡을 때마다 괜히 힘줌", q2: "걸을 때 항상 내 쪽으로 몸 기울어짐" },
+  { id: 10, q1: "연인이 나랑 헤어질 상상만 해도 울어버림", q2: "연인이 ‘우리 나중에 어떻게 늙을지’ 매일 말함" },
+  { id: 11, q1: "연인이 나 부를 때 항상 별명 + 애칭 풀콤보", q2: "연인이 나 부를 때 항상 풀네임 + 진지한 눈빛" },
+  { id: 12, q1: "교수님이 내 얼굴은 확실히 기억함 (이유는 모름)", q2: "이름은 아시는데 얼굴을 모르심 (예시 들 때 항상 혜솔이는~ 이러심)" },
+  { id: 13, q1: "팀플에서 내가 말하면 다들 메모함 (매우 진지)", q2: "내가 말만 하면 웃음 터짐 (내용은 안 중요)" },
+  { id: 14, q1: "인사할 때 포옹 타이밍 매번 어색", q2: "작별 인사에서 혼자만 손 흔듦" },
+  { id: 15, q1: "파티에서 딱 한 번 춤췄는데 그 영상이 돌고 있음", q2: "한 번도 안 춰서 ‘전설의 미스터리녀’로 불림" }
+];
+
 const gaeunTmiList = [
   "1. 가은이는 고딩 때 비공식 성우로 활동한 적이 있다. \n(정말 “비공식”임)",
   "2. 가은이가 먹을 수 있는 오이 요리는 피클과 오이짠지무침 뿐이다. \n(무려 2개나 있음ㄷㄷ)",
@@ -194,14 +212,12 @@ useEffect(() => {
   });
 }, []);
 
+// 심심할 때-밸겜
+const [showBalanceModal, setShowBalanceModal] = useState(false);
+const [balanceSelections, setBalanceSelections] = useState({}); // { 1: 'q1', 2: 'q2' } 형태로 저장
+
 // 심심할 때-TMI
 const [showTmiModal, setShowTmiModal] = useState(false);
-
-// 기존 handleTMI 수정
-const handleTMI = () => { 
-    setShowTmiModal(true);
-    setShowBoredMenu(false); 
-};
 
   const [activeStar, setActiveStar] = useState(null);
   const [lastActiveStar, setLastActiveStar] = useState(null);
@@ -443,10 +459,22 @@ const handleTMI = () => {
 
   // 심심 메뉴 각 버튼 핸들러
   const handleBalanceGame = () => { 
-      console.log("밸런스 게임 버튼 클릭"); 
+    setShowBalanceModal(true);
+    setShowBoredMenu(false); 
+  };
+  const handleTMI = () => { 
+    setShowTmiModal(true);
+    setShowBoredMenu(false); 
   };
   const handleKaraoke = () => { 
       console.log("노래방 버튼 클릭"); 
+  };
+
+  const handleSelectOption = (gameId, option) => {
+    setBalanceSelections(prev => ({
+        ...prev,
+        [gameId]: option
+    }));
   };
 
   // 칭찬 오디오 재생 로직
@@ -678,8 +706,37 @@ const handleTMI = () => {
              </button>
            </div>
         </div>
+      )} 
+      
+      {/* TMI 모달 아래에 추가 */}
+      {showBalanceModal && (
+        <div className="hidden-modal active balance-modal">
+          <div className="hidden-text balance-title">Balance Game</div>
+          <div className="balance-scroll-container">
+            {balanceGameList.map((game) => (
+              <div key={game.id} className="balance-item">
+                <div 
+                  className={`balance-option ${balanceSelections[game.id] === 'q1' ? 'selected' : ''}`}
+                  onClick={() => handleSelectOption(game.id, 'q1')}
+                >
+                  {game.q1}
+                </div>
+                <div className="balance-vs">VS</div>
+                <div 
+                  className={`balance-option ${balanceSelections[game.id] === 'q2' ? 'selected' : ''}`}
+                  onClick={() => handleSelectOption(game.id, 'q2')}
+                >
+                  {game.q2}
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="hidden-buttons">
+            <button onClick={() => setShowBalanceModal(false)}>완료!</button>
+          </div>
+        </div>
       )}
-
+      
       {showTmiModal && (
         <div className="hidden-modal active tmi-modal">
           <div className="hidden-text tmi-title">Gaeun's TMI List</div>
