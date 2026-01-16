@@ -722,3 +722,274 @@ body {
   border-radius: 10px;
 }
 
+/* 숨 고르기 애니메이션 */
+.breathing-circle {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 232, 127, 0.3), rgba(255, 232, 127, 0.1));
+  border: 2px solid rgba(255, 232, 127, 0.6);
+  box-shadow: 0 0 40px rgba(255, 232, 127, 0.4);
+}
+
+.breathing-circle.inhale {
+  animation: breatheIn 4s ease-in-out forwards;
+}
+
+.breathing-circle.exhale {
+  animation: breatheOut 4s ease-in-out forwards;
+}
+
+@keyframes breatheIn {
+  0% { transform: scale(1); opacity: 0.6; }
+  100% { transform: scale(2.5); opacity: 0.9; }
+}
+
+@keyframes breatheOut {
+  0% { transform: scale(2.5); opacity: 0.9; }
+  100% { transform: scale(1); opacity: 0.6; }
+}
+
+.breathing-text {
+  margin-top: 200px;
+  color: rgba(255, 232, 127, 0.7); /* 은은하게 */
+  font-size: 1.2rem; /* 조금 작게 */
+  font-weight: 300;
+  letter-spacing: 2px;
+  text-align: center;
+  text-shadow: 0 0 8px rgba(255, 232, 127, 0.3);
+  animation: gentleFade 20s ease-in-out infinite; /* 15초 간격 */
+}
+
+@keyframes gentleFade {
+  0% { opacity: 0; }           /* 시작: 안 보임 */
+  5% { opacity: 1; }           /* 1초 동안 천천히 나타남 */
+  25% { opacity: 1; }          /* 4초 동안 보임 (5% ~ 25%) */
+  30% { opacity: 0; }          /* 1초 페이드아웃 */
+  100% { opacity: 0; }         /* 15초 대기 후 반복 */
+}
+
+/* 노래방 모달 */
+.karaoke-modal {
+  width: 90%;
+  max-width: 400px;
+}
+
+.karaoke-title {
+  font-size: 1.5rem;
+  margin-bottom: 25px;
+}
+
+.karaoke-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  width: 100%;
+}
+
+.karaoke-audio {
+  width: 100%;
+  max-width: 320px;
+  height: 45px;
+  outline: none;
+  filter: invert(1);
+  opacity: 0.9;
+  transition: opacity 0.3s;
+}
+
+.karaoke-audio:hover {
+  opacity: 1;
+}
+
+.karaoke-subtitle {
+  color: rgba(255, 232, 127, 0.8);
+  font-size: 0.95rem;
+  text-align: center;
+  margin-top: 10px;
+}
+
+.heart-container {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.1s linear, opacity 0.5s ease-out;
+  
+  /* [1] 하트 전체의 외곽 광채 (뽀용함의 핵심) */
+  filter: drop-shadow(0 0 10px rgba(255, 94, 120, 0.5))
+          drop-shadow(0 0 25px rgba(255, 143, 163, 0.3));
+}
+
+.css-heart {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  background: #ff7a90; /* 따뜻한 핑크 */
+  transform: rotate(-45deg);
+  /* [핵심] 여기서 box-shadow를 지워야 경계선이 사라집니다 */
+  box-shadow: none; 
+}
+
+.css-heart::before,
+.css-heart::after {
+  content: '';
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  background: inherit; 
+  border-radius: 50%;
+  /* [핵심] 원에서도 그림자를 지워야 사각형과 매끄럽게 합쳐집니다 */
+  box-shadow: none;
+}
+
+.css-heart::before {
+  top: -30px;
+  left: 0;
+}
+
+.css-heart::after {
+  left: 30px;
+  top: 0;
+}
+
+.heart-container {
+  --light-x: 50%;
+  --light-y: 60%;
+}
+
+/* [2] 뽀용함의 치트키: 도형 3개를 하나로 덮는 통합 입체 레이어 */
+.heart-container::after {
+  content: '';
+  position: absolute;
+  inset: 15%;
+
+  background: radial-gradient(
+    circle at var(--light-x) var(--light-y),
+    rgba(180, 20, 60, 0.35) 0%,
+    rgba(255, 80, 120, 0.25) 35%,
+    rgba(255, 255, 255, 0.45) 65%,
+    rgba(255, 255, 255, 0.65) 80%,
+    transparent 100%
+  );
+
+  filter: blur(10px);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.color-burst-effect {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: radial-gradient(circle, 
+    rgba(255, 143, 163, 0.8) 0%, 
+    rgba(255, 94, 120, 0.4) 40%, 
+    transparent 70%);
+  opacity: 0;
+  transform: scale(0);
+}
+
+/* ===== [신규 추가] 두근두근 하트 박동 애니메이션 ===== */
+@keyframes heartbeat {
+  0% { transform: rotate(-45deg) scale(1); }
+  15% { transform: rotate(-45deg) scale(1.15); } /* 쿵! 하고 커짐 */
+  30% { transform: rotate(-45deg) scale(1); }    /* 제자리 */
+  45% { transform: rotate(-45deg) scale(1.08); } /* 작은 쿵 */
+  60% { transform: rotate(-45deg) scale(1); }
+  100% { transform: rotate(-45deg) scale(1); }
+}
+
+/* 누르고 있을 때 이 클래스가 붙으면 두근거립니다 */
+.css-heart.beating {
+  /* 1초 주기로 두근거림 반복 */
+  animation: heartbeat 1s infinite cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+
+
+/* ===== [신규 추가] 색감이 확 퍼지는 버스트 효과 ===== */
+.color-burst-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100px;
+  height: 100px;
+  pointer-events: none; /* 클릭 방해 안 함 */
+  z-index: 0; /* 하트 뒤에서 퍼지도록 */
+}
+
+.color-burst-effect {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  /* 하트와 비슷한 핑크빛 그라데이션 */
+  background: radial-gradient(circle, #ff8fa3 0%, #ff5e78 60%, transparent 100%);
+  opacity: 0; /* 평소엔 안 보임 */
+  transform: scale(0);
+}
+
+/* 완료 순간 활성화되는 애니메이션 */
+.color-burst-effect.active {
+  animation: burstOut 0.8s ease-out forwards;
+}
+
+@keyframes burstOut {
+  0% {
+    opacity: 0.8;
+    transform: scale(0.5);
+  }
+  100% {
+    opacity: 0; /* 점점 투명해지며 */
+    transform: scale(20); /* 화면을 뒤덮을 만큼 거대해짐 */
+  }
+}
+
+
+/* ===== [수정/추가] 완료 화면 스타일 ===== */
+/* 완료 멘트 컨테이너 */
+.finish-container {
+  opacity: 0; /* 처음엔 숨김 */
+  transform: translateY(20px);
+  animation: finishFadeIn 0.8s ease-out forwards; /* 버스트 후 부드럽게 등장 */
+}
+
+@keyframes finishFadeIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 완료 화면에 보여줄 정적인 하트 */
+.finish-heart {
+  margin: 0 auto 40px; /* 중앙 정렬 및 하단 여백 */
+  transform: scale(1.2); /* 약간 크게 */
+  filter: drop-shadow(0 0 15px rgba(255, 94, 120, 0.8)); /* 더 빛나게 */
+}
+
+/* 완료 멘트 텍스트 */
+.praise-finish-text {
+  font-size: 1.2rem;
+  color: #ffe87f;
+  font-weight: 500;
+  text-shadow: 0 0 15px rgba(255, 232, 127, 0.6);
+  white-space: nowrap;
+}
+
+@keyframes hugComplete {
+  0% { 
+    transform: scale(1.9);
+    opacity: 1;
+  }
+  50% { 
+    transform: scale(2.5);
+    opacity: 0.8;
+  }
+  100% { 
+    transform: scale(1);
+    opacity: 1;
+  }
+}

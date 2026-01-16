@@ -97,6 +97,119 @@ const FireworkCanvas = () => {
   );
 };
 
+const BreathingCircle = () => {
+  const [phase, setPhase] = useState('inhale');
+  
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setPhase(prev => prev === 'inhale' ? 'exhale' : 'inhale');
+    }, 4000);
+    return () => clearInterval(interval);
+  }, []);
+  
+  return (
+    <>
+      <div className={`breathing-circle ${phase}`} />
+      <div className="breathing-text">
+        원을 따라 함께 천천히 호흡해 보세요.
+      </div>
+    </>
+  );
+};
+
+const HuggingButton = () => {
+  const [pressing, setPressing] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const [completed, setCompleted] = useState(false);
+  const [showFinishText, setShowFinishText] = useState(false);
+  const intervalRef = useRef(null);
+  const burstTimerRef = useRef(null);
+
+  const handleStart = () => {
+    setPressing(true);
+    setCompleted(false);
+    setShowFinishText(false);
+    let count = 0;
+    
+    if (burstTimerRef.current) clearTimeout(burstTimerRef.current);
+
+    intervalRef.current = setInterval(() => {
+      count += 0.1;
+      setProgress(count);
+      
+      if (count >= 3) {
+        clearInterval(intervalRef.current);
+        setCompleted(true);
+        setPressing(false);
+
+        // 3초 완료 시점에 버스트 효과를 보여주고 0.8초 뒤 멘트 표시
+        burstTimerRef.current = setTimeout(() => {
+          setShowFinishText(true);
+        }, 800); 
+      }
+    }, 100);
+  };
+
+  const handleEnd = () => {
+    if (intervalRef.current) clearInterval(intervalRef.current);
+    if (!completed) {
+      setPressing(false);
+      setProgress(0);
+    }
+  };
+
+  // 진행도에 따라 하트 컨테이너가 커짐
+  const containerScale = 1 + (progress * 0.6);
+
+  return (
+    <div style={{ position: 'relative', textAlign: 'center', width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      
+      {/* 색감이 퍼지는 버스트 효과 레이어 */}
+      <div className="color-burst-container">
+        <div className={`color-burst-effect ${completed && !showFinishText ? 'active' : ''}`} />
+      </div>
+
+      {!completed ? (
+        <div style={{ opacity: completed ? 0 : 1, transition: 'opacity 0.3s' }}>
+          <div style={{
+            fontSize: '1rem', color: '#ffe87f', marginBottom: '40px', opacity: 0.8,
+            visibility: pressing ? 'hidden' : 'visible'
+          }}>
+            3초간 꾹 눌러봐
+          </div>
+          
+          <div
+            onMouseDown={handleStart}
+            onMouseUp={handleEnd}
+            onMouseLeave={handleEnd}
+            onTouchStart={handleStart}
+            onTouchEnd={handleEnd}
+            className="heart-container"
+            style={{
+              cursor: 'pointer',
+              userSelect: 'none',
+              transform: `scale(${containerScale})`,
+              margin: '0 auto'
+            }}
+          >
+            {/* 누를 때 beating 클래스가 붙어 두근거림 */}
+            <div className={`css-heart ${pressing ? 'beating' : ''}`} />
+          </div>
+        </div>
+      ) : showFinishText ? (
+        <div className="finish-container">
+          <div className="heart-container finish-heart">
+             <div className="css-heart" style={{ transform: 'rotate(-45deg) scale(1)' }} />
+          </div>
+          <div className="praise-finish-text">
+            포옹 에너지 전달 완료!
+          </div>
+        </div>
+      ) : null}
+    </div>
+  );
+};
+
 const stars = [
   { id: 1, x: 12, y: 8, neon: false },
   { id: 2, x: 38, y: 10, neon: false },
@@ -212,9 +325,15 @@ useEffect(() => {
   });
 }, []);
 
+// 힘들 때
+const [showBreathing, setShowBreathing] = useState(false);
+
 // 심심할 때-밸겜
 const [showBalanceModal, setShowBalanceModal] = useState(false);
 const [balanceSelections, setBalanceSelections] = useState({}); // { 1: 'q1', 2: 'q2' } 형태로 저장
+
+// 심심할 때-노래방
+const [showKaraoke, setShowKaraoke] = useState(false);
 
 // 심심할 때-TMI
 const [showTmiModal, setShowTmiModal] = useState(false);
@@ -236,6 +355,9 @@ const [showTmiModal, setShowTmiModal] = useState(false);
 
   // 심심할 때 메뉴 상태
   const [showBoredMenu, setShowBoredMenu] = useState(false);
+
+  // 외로울 때 기능 상태
+  const [showHugging, setShowHugging] = useState(false);
 
   // 칭찬 기능 상태
   const [activePraise, setActivePraise] = useState(null);
@@ -406,6 +528,9 @@ const [showTmiModal, setShowTmiModal] = useState(false);
     setPhotoIndex(0); 
     setTouchStart(0);
     setTouchEnd(0);
+    setShowBreathing(false);
+    setShowKaraoke(false);
+    setShowHugging(false);
 
     if (!isAriesSeason) {
         setActiveStar(null);
@@ -467,7 +592,8 @@ const [showTmiModal, setShowTmiModal] = useState(false);
     setShowBoredMenu(false); 
   };
   const handleKaraoke = () => { 
-      console.log("노래방 버튼 클릭"); 
+    setShowKaraoke(true);
+    setShowBoredMenu(false);
   };
 
   const handleSelectOption = (gameId, option) => {
@@ -686,6 +812,30 @@ const [showTmiModal, setShowTmiModal] = useState(false);
                   여전히 심심하다면?
                 </button>
               </div>
+            )} 
+            
+            {/* 힘들 때(ID: 11) : 숨 고르기 버튼 */}
+            {selectedStar.id === 11 && (
+              <div style={{ marginTop: '20px' }}>
+                <button 
+                  className="bored-trigger-btn" 
+                  onClick={() => setShowBreathing(true)}
+                >
+                  함께 숨 고르기 🌬️
+                </button>
+              </div>
+            )} 
+
+            {/* 외로울 때(ID: 7) : 가상 포옹 버튼 */}
+            {selectedStar.id === 7 && (
+              <div style={{ marginTop: '20px' }}>
+                <button 
+                  className="bored-trigger-btn" 
+                  onClick={() => setShowHugging(true)}
+                >
+                  가상 포옹 보내기 💝
+                </button>
+              </div>
             )}
           </div>
         </div>
@@ -708,7 +858,6 @@ const [showTmiModal, setShowTmiModal] = useState(false);
         </div>
       )} 
       
-      {/* TMI 모달 아래에 추가 */}
       {showBalanceModal && (
         <div className="hidden-modal active balance-modal">
           <div className="hidden-text balance-title">Balance Game</div>
@@ -751,6 +900,55 @@ const [showTmiModal, setShowTmiModal] = useState(false);
             <button onClick={() => setShowTmiModal(false)}>다 읽었어!</button>
           </div>
         </div>
+      )} 
+      
+      {showHugging && (
+        <div 
+          style={{
+            position: 'fixed',
+            top: 0, left: 0,
+            width: '100%', height: '100%',
+            background: 'rgba(5, 7, 13, 0.95)',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 100
+          }}
+          onClick={() => setShowHugging(false)}
+        >
+          <div onClick={(e) => e.stopPropagation()}>
+            <HuggingButton />
+          </div>
+          
+          <div style={{
+            position: 'absolute',
+            bottom: '40px',
+            color: 'rgba(255, 255, 255, 0.5)',
+            fontSize: '1rem',
+            opacity: 0.7
+          }}>
+            화면을 터치하면 돌아갑니다
+          </div>
+        </div>
+      )}
+      
+      {showKaraoke && (
+        <div className="hidden-modal active karaoke-modal">
+          <div className="hidden-text karaoke-title">🎤 퀸크루즈 노래연습장</div>
+          <div className="karaoke-content"> 
+            <audio controls className="custom-audio">
+              <source src="/sound1.mp3" type="audio/mpeg" />
+              브라우저가 오디오를 지원하지 않습니다.
+            </audio>
+            <div className="karaoke-subtitle">
+              오리의 특별한 노래를 들어보세요 🎵
+            </div>
+          </div>
+          <div className="hidden-buttons">
+            <button onClick={() => setShowKaraoke(false)}>나가기</button>
+          </div>
+        </div>
       )}
 
       {showHiddenQuestion && (
@@ -790,6 +988,34 @@ const [showTmiModal, setShowTmiModal] = useState(false);
                <span style={{fontSize: '0.8rem', opacity: 0.7}}>화면을 누르면 닫혀요</span>
              </div>
            </div>
+        </div>
+      )} 
+      
+      {showBreathing && (
+        <div 
+          style={{
+            position: 'fixed',
+            top: 0, left: 0,
+            width: '100%', height: '100%',
+            background: 'rgba(5, 7, 13, 0.95)',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            paddingTop: '60px',
+            zIndex: 100
+          }}
+          onClick={() => setShowBreathing(false)}
+        >
+          <BreathingCircle />
+          <div style={{
+            position: 'absolute',
+            bottom: '40px',
+            color: 'rgba(255, 255, 255, 0.5)',
+            fontSize: '0.9rem'
+          }}>
+            화면을 터치하면 돌아갑니다
+          </div>
         </div>
       )}
 
