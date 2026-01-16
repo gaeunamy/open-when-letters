@@ -97,6 +97,114 @@ const FireworkCanvas = () => {
   );
 };
 
+const GaeunDiagnosis = ({ onBack }) => {
+  const [phase, setPhase] = useState('idle'); // 'idle' | 'recording' | 'processing' | 'result'
+  const [volume, setVolume] = useState(0);
+  const [randomResult, setRandomResult] = useState("");
+  
+  const audioContextRef = useRef(null);
+  const analyserRef = useRef(null);
+  const animationRef = useRef(null);
+
+  const results = [
+    "'가은 결핍증'입니다. \n즉시 가은이에게 보이스톡을 거세요.",
+    "음... 엄살은 아니군요. \n당장 이불 속으로 들어가서 맛있는 간식 먹으며 푹 쉬세요! 명령입니다.",
+    "많이 피곤한가 봐요. 따뜻한 물 마시고 꿀잠 자기!",
+    "마음이 서러워서 생긴 병이네요. \n가은쌤이 실시간으로 응원 기운 보내는 중...",
+    "이건 약도 없어요. \n가은이랑 맛있는 거 먹어야 낫는 병입니다. 한국 올 날만 기다리기!"
+  ];
+
+  // 음성 감지 시작
+  const startListening = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const AudioContext = window.AudioContext || window.webkitAudioContext;
+      const audioContext = new AudioContext();
+      const analyser = audioContext.createAnalyser();
+      const source = audioContext.createMediaStreamSource(stream);
+      analyser.fftSize = 256;
+      source.connect(analyser);
+      analyserRef.current = analyser;
+      audioContextRef.current = audioContext;
+
+      const updateVolume = () => {
+        const dataArray = new Uint8Array(analyser.frequencyBinCount);
+        analyser.getByteFrequencyData(dataArray);
+        const average = dataArray.reduce((a, b) => a + b) / dataArray.length;
+        setVolume(average);
+        animationRef.current = requestAnimationFrame(updateVolume);
+      };
+      updateVolume();
+      setPhase('recording');
+    } catch (err) {
+      alert("마이크 권한이 필요해요!");
+    }
+  };
+
+  // 진단 시작 (버튼에서 손 뗄 때)
+  const handleStop = () => {
+    if (animationRef.current) cancelAnimationFrame(animationRef.current);
+    if (audioContextRef.current) audioContextRef.current.close();
+    
+    setPhase('processing');
+    
+    // 3초간 "진단 중" 반짝인 후 결과 발표
+    setTimeout(() => {
+      const pick = results[Math.floor(Math.random() * results.length)];
+      setRandomResult(pick);
+      setPhase('result');
+    }, 4500);
+  };
+
+  return (
+    <div className="diagnosis-container" style={{ textAlign: 'center' }}>
+      {/* 배경 버스트 효과 (결과 나올 때만) */}
+      <div className="color-burst-container">
+        <div className={`color-burst-effect ${phase === 'result' ? 'active' : ''}`} />
+      </div>
+
+      {phase !== 'result' ? (
+        <>
+          {/* 중앙 구슬 (볼륨에 따라 반응) */}
+          <div 
+            className={`breathing-circle ${phase === 'processing' ? 'processing-pulse' : ''}`}
+            style={{ 
+              transform: `scale(${1 + volume / 100})`,
+              margin: '0 auto 100px'
+            }} 
+          />
+          
+          <div className="diagnosis-guide">
+            {phase === 'idle' && "버튼을 누르고 어디가 아픈지 말해줘"}
+            {phase === 'recording' && "가은쌤이 듣고 있어... (말하는 중)"}
+            {phase === 'processing' && <span className="flashing-text">진단 중... 가은쌤 분석 중...</span>}
+          </div>
+
+          <button 
+            className={`mic-button ${phase === 'recording' ? 'active' : ''}`}
+            onMouseDown={startListening}
+            onMouseUp={handleStop}
+            onTouchStart={startListening}
+            onTouchEnd={handleStop}
+            disabled={phase === 'processing'}
+          >
+            {phase === 'recording' ? "🎤" : "🎙️"}
+          </button>
+        </>
+      ) : (
+        <div className="finish-container">
+          <div className="message-content" style={{ fontSize: '1.2rem', color: '#ffe87f', whiteSpace: 'pre-wrap' }}>
+            {randomResult}
+          </div>
+          <button className="bored-trigger-btn" onClick={onBack} style={{ marginTop: '40px' }}>
+            돌아가기
+          </button>
+        </div>
+      )}
+    </div>
+  );
+};
+
 const BreathingCircle = () => {
   const [phase, setPhase] = useState('inhale');
   
@@ -210,6 +318,163 @@ const HuggingButton = () => {
   );
 };
 
+const ScratchCard = () => {
+  const canvasRef = useRef(null);
+  const [isScratching, setIsScratching] = useState(false);
+  const [scratchPercent, setScratchPercent] = useState(0);
+  const [revealed, setRevealed] = useState(false);
+
+  const messages = [
+    { text: "오늘은 맛있는 디저트 먹기 🍰", sub: "달콤한 게 최고의 약이야!" },
+    { text: "좋아하는 음악 들으며 산책하기 🎵", sub: "날씨 좋으면 더 좋고!" },
+    { text: "오늘 하루는 그냥 쉬어도 돼 💤", sub: "충전의 시간도 필요해" },
+    { text: "친구한테 수다 떨기 📞", sub: "말하다 보면 기분이 풀릴 거야" },
+    { text: "좋아하는 영화/드라마 정주행 🎬", sub: "현실 도피도 가끔은 필요해" },
+    { text: "따뜻한 차 한 잔 마시기 ☕", sub: "여유를 가져봐" },
+    { text: "고양이 영상 보기 🐱", sub: "귀여운 게 힐링이지!" },
+    { text: "일찍 자고 푹 쉬기 😴", sub: "내일은 더 나아질 거야" },
+  ];
+
+  const [currentMessage] = useState(() => messages[Math.floor(Math.random() * messages.length)]);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d');
+    
+    // 캔버스 크기 설정
+    canvas.width = 320;
+    canvas.height = 200;
+
+    // 스크래치 영역 그리기 (은색 코팅)
+    ctx.fillStyle = '#c0c0c0';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
+    // 텍스트
+    ctx.fillStyle = '#666';
+    ctx.font = 'bold 20px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('문질러서 확인하세요!', canvas.width / 2, canvas.height / 2);
+    
+  }, []);
+
+  const scratch = (e) => {
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d');
+    const rect = canvas.getBoundingClientRect();
+    
+    let x, y;
+    if (e.type.includes('touch')) {
+      x = e.touches[0].clientX - rect.left;
+      y = e.touches[0].clientY - rect.top;
+    } else {
+      x = e.clientX - rect.left;
+      y = e.clientY - rect.top;
+    }
+
+    ctx.globalCompositeOperation = 'destination-out';
+    ctx.beginPath();
+    ctx.arc(x, y, 20, 0, Math.PI * 2);
+    ctx.fill();
+
+    // 긁힌 정도 계산
+    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+    const pixels = imageData.data;
+    let transparent = 0;
+    
+    for (let i = 3; i < pixels.length; i += 4) {
+      if (pixels[i] === 0) transparent++;
+    }
+    
+    const percent = (transparent / (pixels.length / 4)) * 100;
+    setScratchPercent(percent);
+
+    if (percent > 70 && !revealed) {
+      setRevealed(true);
+    }
+  };
+
+  const handleStart = () => setIsScratching(true);
+  const handleEnd = () => setIsScratching(false);
+
+  return (
+    <div style={{ textAlign: 'center', userSelect: 'none' }}>
+      <div style={{
+        fontSize: '1rem',
+        color: '#ffe87f',
+        marginBottom: '30px',
+        opacity: 0.8
+      }}>
+        {revealed ? '💝' : '손가락으로 문질러봐!'}
+      </div>
+
+      <div style={{ position: 'relative', display: 'inline-block' }}>
+        {/* 뒷면 (숨겨진 메시지) */}
+        <div style={{
+          width: '320px',
+          height: '200px',
+          background: 'linear-gradient(135deg, rgba(255, 232, 127, 0.2), rgba(255, 200, 100, 0.2))',
+          border: '2px solid #ffe87f',
+          borderRadius: '15px',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: '20px',
+          gap: '15px'
+        }}>
+          <div style={{
+            fontSize: '1.3rem',
+            color: '#ffe87f',
+            fontWeight: 'bold',
+            textAlign: 'center',
+            lineHeight: '1.4'
+          }}>
+            {currentMessage.text}
+          </div>
+          <div style={{
+            fontSize: '0.9rem',
+            color: 'rgba(255, 232, 127, 0.8)',
+            textAlign: 'center'
+          }}>
+            {currentMessage.sub}
+          </div>
+        </div>
+
+        {/* 스크래치 레이어 */}
+        <canvas
+          ref={canvasRef}
+          onMouseDown={handleStart}
+          onMouseUp={handleEnd}
+          onMouseMove={isScratching ? scratch : null}
+          onTouchStart={handleStart}
+          onTouchEnd={handleEnd}
+          onTouchMove={scratch}
+          style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            cursor: 'pointer',
+            borderRadius: '15px',
+            opacity: revealed ? 0 : 1,
+            transition: 'opacity 0.5s'
+          }}
+        />
+      </div>
+
+      {revealed && (
+        <div style={{
+          marginTop: '30px',
+          color: 'rgba(255, 232, 127, 0.7)',
+          fontSize: '0.9rem',
+          animation: 'fadeIn 0.5s'
+        }}>
+          ✨ 오늘 하루 화이팅! ✨
+        </div>
+      )}
+    </div>
+  );
+};
+
 const stars = [
   { id: 1, x: 12, y: 8, neon: false },
   { id: 2, x: 38, y: 10, neon: false },
@@ -305,6 +570,15 @@ const gaeunTmiList = [
   "10. 가은이는 지금 혜솔이가 보고 싶다."
 ];
 
+const praiseData = {
+  "학업·일": "황혜솔 공부 잘하는 거 모르는 사람 있냐?\n일단 나는 잘하는 거 진작에 알고 있었다.\n\n거기서도 잘하는 건 반칙이세요🙏",
+  "인간관계": "파워 인싸가 되었다는 소식 들었다.\n역시 넌 E야.\n\n뭐? 남친도 생겼다고? 이 사람 봐라.\n우리한테 바로 얘기해줘야지. 얼른 카톡 ㄱ",
+  "갓생·생활": "공부도 하고 친구도 사귀고 파티도 하고\n여행도 다니며 우리랑 연락도 계속하고..\n\n너 이거 갓생이야. 너 갓생러야.",
+  "용기·도전": "넌 이미 혼자서 새로운 곳에 가서\n새로운 사람을 만나고 새로운 하루를 보내고 있잖아.\n\n이거 모두 용기가 없으면 할 수 없는 일인 거 알지?\n넌 용감하고 대단한 사람이야. 늘 기억해.",
+  "멘탈관리": "이야 그 상황에서 화도 안 내고/울지도 않고/웃지도 않고/욕도 안 하고 어떻게 참았냐.\n(나였으면 이미 박살 내거나/울거나/욕먹거나 셋 중 하나다)\n\n넌 정말 성숙한 사람이야.\n너가 오늘 참고 넘어간 건 너가 부족해서가 아니야.\n\n걔가 이상한 거지. 웃기는 놈들이네.\n카톡으로 다 풀어!!!",
+  "그냥": "넌 최고야\n\n다 뿌셔버려"
+};
+
 // 사진 파일 목록
 // [Vite 버전으로 수정된 이미지 목록]
 const myPhotos = [
@@ -327,6 +601,81 @@ useEffect(() => {
 
 // 힘들 때
 const [showBreathing, setShowBreathing] = useState(false);
+
+// 울적할 때
+const [showScratch, setShowScratch] = useState(false);
+
+// 몸이 아플 때
+const [showDiagnosis, setShowDiagnosis] = useState(false);
+
+// 칭찬받고 싶을 때
+const [activePraise, setActivePraise] = useState(null);
+
+// 잠이 안 올 때
+const [showStarLetter, setShowStarLetter] = useState(false); // 편지지 모달
+const [starMessage, setStarMessage] = useState("");         // 입력 메시지
+const [userStars, setUserStars] = useState([]);             // 하늘에 띄워진 별들 목록
+const [isFlying, setIsFlying] = useState(false);             // 날아가는 애니메이션 중인지
+
+// 텍스트가 길어지면 별의 중앙을 유지하며 높이를 조절
+const handleTextChange = (e) => {
+  const target = e.target;
+  const maxHeight = 140;
+
+  // 1. 현재 높이를 잠시 기억해둡니다.
+  const previousHeight = target.style.height;
+  
+  // 2. 높이를 측정하기 위해 잠시 초기화합니다.
+  target.style.height = 'auto';
+  const currentScrollHeight = target.scrollHeight;
+
+  // 3. 만약 새 높이가 한계선을 넘는다면?
+  if (currentScrollHeight > maxHeight) {
+    // [중요] 높이를 초기화(auto) 상태로 두지 않고, 이전 높이로 되돌립니다.
+    target.style.height = previousHeight;
+    return; // 더 이상 글자가 적히지 않게 차단!
+  }
+
+  // 4. 한계선 이하라면 정상적으로 글자를 업데이트하고 높이를 맞춥니다.
+  setStarMessage(target.value);
+  target.style.height = currentScrollHeight + 'px';
+};
+
+const handleSendStar = () => {
+  if (!starMessage.trim()) return;
+
+  setIsFlying(true); // 애니메이션 시작
+
+  // 1.5초 뒤(날아가는 모션 완료 후) 실제 하늘에 추가
+  setTimeout(() => {
+    const newStar = {
+      id: Date.now(),
+      x: Math.random() * 90 + 5, // 랜덤 위치
+      y: Math.random() * 50 + 5,
+      message: starMessage
+    };
+
+    // 기존 별들에 새 별을 합친 새 리스트를 변수로 만듦
+    const updatedStars = [...userStars, newStar];
+    
+    setUserStars(updatedStars);
+    localStorage.setItem('stars', JSON.stringify(updatedStars));
+
+    setIsFlying(false);
+    setShowStarLetter(false);
+    setStarMessage("");
+    // new Audio('/ting.mp3').play();
+  }, 1500);
+};
+
+// 사이트 접속 시 저장된 별을 불러오는 기능입니다.
+useEffect(() => {
+  const savedStars = localStorage.getItem('stars');
+  if (savedStars) {
+    // 저장된 글자 데이터를 다시 배열 형태로 바꿔서 화면에 띄웁니다.
+    setUserStars(JSON.parse(savedStars));
+  }
+}, []); // []는 사이트 켰을 때 딱 한 번만 실행하라는 뜻이에요!
 
 // 심심할 때-밸겜
 const [showBalanceModal, setShowBalanceModal] = useState(false);
@@ -358,11 +707,6 @@ const [showTmiModal, setShowTmiModal] = useState(false);
 
   // 외로울 때 기능 상태
   const [showHugging, setShowHugging] = useState(false);
-
-  // 칭찬 기능 상태
-  const [activePraise, setActivePraise] = useState(null);
-  // 칭찬 오디오 객체 관리
-  const praiseAudioRef = useRef(null);
 
   // 스와이프 감지용 상태
   const [touchStart, setTouchStart] = useState(0);
@@ -512,13 +856,6 @@ const [showTmiModal, setShowTmiModal] = useState(false);
       return;
     }
 
-    // 재생 중인 칭찬 오디오 멈춤
-    if (praiseAudioRef.current) {
-      praiseAudioRef.current.pause();
-      praiseAudioRef.current.currentTime = 0;
-      praiseAudioRef.current = null;
-    }
-
     // 모든 상태 초기화
     setSelectedStar(null);
     setShowHiddenQuestion(false);
@@ -531,6 +868,7 @@ const [showTmiModal, setShowTmiModal] = useState(false);
     setShowBreathing(false);
     setShowKaraoke(false);
     setShowHugging(false);
+    setShowScratch(false); 
 
     if (!isAriesSeason) {
         setActiveStar(null);
@@ -603,38 +941,14 @@ const [showTmiModal, setShowTmiModal] = useState(false);
     }));
   };
 
-  // 칭찬 오디오 재생 로직
-  const handlePraiseAudio = (type) => {
-    if (praiseAudioRef.current) {
-      praiseAudioRef.current.pause();
-      praiseAudioRef.current.currentTime = 0;
-    }
-
-    const audioMap = {
-      study: "/praise_study.mp3",
-      relationship: "/praise_rel.mp3",
-      life: "/praise_life.mp3",
-      challenge: "/praise_chal.mp3",
-      mental: "/praise_mental.mp3",
-      exist: "/praise_exist.mp3"
-    };
-
-    if (activePraise === type) {
+  // 칭찬 버튼 클릭 핸들러
+  const handlePraiseClick = (key) => {
+    // 이미 선택된 버튼을 다시 누르면 원래 메시지로 돌아감
+    if (activePraise === key) {
       setActivePraise(null);
-      praiseAudioRef.current = null;
-      return;
+    } else {
+      setActivePraise(key);
     }
-
-    const audio = new Audio(audioMap[type]);
-    praiseAudioRef.current = audio;
-    setActivePraise(type); 
-    
-    audio.play().catch(e => console.log("재생 오류:", e));
-
-    audio.onended = () => {
-      setActivePraise(null);
-      praiseAudioRef.current = null;
-    };
   };
 
   const getPathD = () => {
@@ -716,7 +1030,16 @@ const [showTmiModal, setShowTmiModal] = useState(false);
               )}
             </div>
           );
-        })}
+        })} 
+        
+        {userStars.map(star => (
+          <div 
+            key={star.id} 
+            className="user-star star-message star-active" 
+            style={{ left: `${star.x}%`, top: `${star.y}%` }}
+            onClick={() => alert(`가은이에게 보낸 별: ${star.message}`)} // 클릭 시 메시지 확인
+          />
+        ))}
       </div>
 
       <div className={`daily-message-container ${showDailyMessage ? "active" : ""}`}>
@@ -736,11 +1059,12 @@ const [showTmiModal, setShowTmiModal] = useState(false);
       />
 
       {/* 기본 메시지 모달 */}
-      {selectedStar && !showHiddenQuestion && !showHiddenPhoto && !showBoredMenu && (
+      {selectedStar && !showHiddenQuestion && !showHiddenPhoto && !showBoredMenu && !showStarLetter && (
         <div className={`message-modal active`}>
           <div className="message-title">{selectedStar.message}</div>
           <div className="message-content">
-            {selectedStar.fullMessage}
+            {/* 15번 별(칭찬)이 아닐 때만 기본 메시지를 보여줌 */}
+            {selectedStar.id !== 15 && selectedStar.fullMessage}
 
             {/* [추가 1] 용기가 필요할 때(ID: 13) : 오디오 플레이어 */}
             {selectedStar.id === 13 && (
@@ -751,56 +1075,79 @@ const [showTmiModal, setShowTmiModal] = useState(false);
                   브라우저가 오디오를 지원하지 않습니다.
                 </audio>
               </div>
-            )}
+            )} 
+
+            {/* 울적할 때(ID: 12) : 스크래치 카드 버튼 */}
+            {selectedStar.id === 12 && (
+              <div style={{ marginTop: '20px' }}>
+                <button 
+                  className="bored-trigger-btn" 
+                  onClick={() => setShowScratch(true)}
+                >
+                  행운의 스크래치 카드 🎴
+                </button>
+              </div>
+            )} 
             
-            {/* [추가 2] 칭찬 받고 싶을 때(ID: 15) : 오디오 버튼 6개 */}
-            {selectedStar.id === 15 && (
-              <div className="praise-section">
-                <div className="praise-grid">
-                  <button 
-                    className={activePraise === "study" ? "playing" : ""} 
-                    onClick={() => handlePraiseAudio("study")}
-                  >
-                    {activePraise === "study" ? "🔊 재생 중..." : "📚 학업/일"}
-                  </button>
-                  
-                  <button 
-                    className={activePraise === "relationship" ? "playing" : ""} 
-                    onClick={() => handlePraiseAudio("relationship")}
-                  >
-                    {activePraise === "relationship" ? "🔊 재생 중..." : "😡 인간관계"}
-                  </button>
-                  
-                  <button 
-                    className={activePraise === "life" ? "playing" : ""} 
-                    onClick={() => handlePraiseAudio("life")}
-                  >
-                    {activePraise === "life" ? "🔊 재생 중..." : "🍚 갓생/생활"}
-                  </button>
-                  
-                  <button 
-                    className={activePraise === "challenge" ? "playing" : ""} 
-                    onClick={() => handlePraiseAudio("challenge")}
-                  >
-                    {activePraise === "challenge" ? "🔊 재생 중..." : "🔥 용기/도전"}
-                  </button>
-                  
-                  <button 
-                    className={activePraise === "mental" ? "playing" : ""} 
-                    onClick={() => handlePraiseAudio("mental")}
-                  >
-                    {activePraise === "mental" ? "🔊 재생 중..." : "☁️ 멘탈관리"}
-                  </button>
-                  
-                  <button 
-                    className={activePraise === "exist" ? "playing" : ""} 
-                    onClick={() => handlePraiseAudio("exist")}
-                  >
-                    {activePraise === "exist" ? "🔊 재생 중..." : "🌱 그냥..."}
-                  </button>
-                </div>
+            {/* 몸이 아플 때(ID: 16) 섹션 */}
+            {selectedStar.id === 16 && (
+              <div style={{ marginTop: '20px' }}>
+                <button 
+                  className="bored-trigger-btn diagnosis-btn" 
+                  onClick={() => setShowDiagnosis(true)}
+                >
+                  🚑 가은쌤한테 진단 받기
+                </button>
+              </div>
+            )} 
+            
+            {/* 잠이 안 올 때(ID: 17) 섹션 */}
+            {selectedStar.id === 17 && (
+              <div style={{ marginTop: '20px' }}>
+                <button className="bored-trigger-btn" onClick={() => setShowStarLetter(true)}>
+                  ✨ 별과 얘기하기
+                </button>
               </div>
             )}
+            
+            {/* [최종 수정] 칭찬 받고 싶을 때(ID: 15) 섹션 */}
+            {selectedStar.id === 15 && (
+              <div className="praise-section">
+                {/* activePraise가 있을 때만 메시지를 보여줍니다. 
+                  원래 있던 selectedStar.fullMessage 부분은 삭제했습니다.
+                */}
+                <div className="message-content" style={{ 
+                  whiteSpace: 'pre-wrap', 
+                  marginBottom: '30px', 
+                  minHeight: '120px', 
+                  fontSize: '1rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}>
+                  {activePraise ? (
+                    praiseData[activePraise]
+                  ) : (
+                    <span style={{ opacity: 0.5, fontSize: '0.9rem' }}>
+                      아래 키워드 중 하나를 선택해봐!
+                    </span>
+                  )}
+                </div>
+            
+                <div className="praise-grid">
+                  {Object.keys(praiseData).map((key) => (
+                    <button 
+                      key={key} 
+                      className={activePraise === key ? "playing" : ""} 
+                      onClick={() => handlePraiseClick(key)}
+                    >
+                      {key}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )} 
+            
 
             {/* [추가 3] 심심할 때(ID:6) 버튼 */}
             {selectedStar.id === 6 && (
@@ -833,7 +1180,7 @@ const [showTmiModal, setShowTmiModal] = useState(false);
                   className="bored-trigger-btn" 
                   onClick={() => setShowHugging(true)}
                 >
-                  가상 포옹 보내기 💝
+                  포옹 보내기 💝
                 </button>
               </div>
             )}
@@ -931,6 +1278,47 @@ const [showTmiModal, setShowTmiModal] = useState(false);
             화면을 터치하면 돌아갑니다
           </div>
         </div>
+      )} 
+      
+      {showScratch && (
+        <div 
+          style={{
+            position: 'fixed',
+            top: 0, left: 0,
+            width: '100%', height: '100%',
+            background: 'rgba(5, 7, 13, 0.95)',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 100
+          }}
+          onClick={() => setShowScratch(false)}
+        >
+          <div onClick={(e) => e.stopPropagation()}>
+            <ScratchCard />
+          </div>
+          
+          <div style={{
+            position: 'absolute',
+            bottom: '40px',
+            color: 'rgba(255, 255, 255, 0.5)',
+            fontSize: '1rem',
+            opacity: 0.7
+          }}>
+            화면을 터치하면 돌아갑니다
+          </div>
+        </div>
+      )} 
+      
+      {showDiagnosis && (
+        <div style={{
+          position: 'fixed', top: 0, left: 0, width: '100%', height: '100%',
+          background: 'rgba(5, 7, 13, 0.98)', display: 'flex', alignItems: 'center', justifyContent: 'center',
+          zIndex: 200
+        }}>
+          <GaeunDiagnosis onBack={() => setShowDiagnosis(false)} />
+        </div>
       )}
       
       {showKaraoke && (
@@ -942,7 +1330,7 @@ const [showTmiModal, setShowTmiModal] = useState(false);
               브라우저가 오디오를 지원하지 않습니다.
             </audio>
             <div className="karaoke-subtitle">
-              오리의 특별한 노래를 들어보세요 🎵
+              우리의 특별한 노래를 들어보세요 🎵
             </div>
           </div>
           <div className="hidden-buttons">
@@ -990,6 +1378,48 @@ const [showTmiModal, setShowTmiModal] = useState(false);
            </div>
         </div>
       )} 
+      
+      {showStarLetter && (
+        <div className={`star-letter-modal ${isFlying ? 'flying' : 'active'}`}>
+          {/* 1. 메시지를 담은 통통한 별 */}
+          <div className="star-paper">
+            {!isFlying ? (
+              <div className="textarea-wrapper"> 
+              {/* 1. 안내 문구 (글자가 없을 때만 보임) */}
+              {starMessage === "" && (
+                <div className="custom-placeholder">
+                  밤하늘에 보낼 메시지를<br/>적어보세요
+                </div>
+              )} 
+              
+              {/* 2. 실제 입력창 */}
+              <textarea 
+                value={starMessage}
+                onChange={handleTextChange}
+                rows={1} 
+              />
+            </div>
+          ) : (
+            <div className="flying-star-core" /> 
+          )}
+        </div>
+      
+          {/* 2. 별 아래 버튼들 (날아가는 중에는 숨김) */}
+          {!isFlying && (
+            <div className="star-letter-buttons">
+              <button className="bored-trigger-btn send-star-btn" onClick={handleSendStar}>
+                별 띄우기 ✨
+              </button>
+              <button className="bored-trigger-btn" onClick={() => {
+                setShowStarLetter(false);
+                setStarMessage("");
+              }}>
+                닫기
+              </button>
+            </div>
+          )}
+        </div>
+      )}
       
       {showBreathing && (
         <div 
