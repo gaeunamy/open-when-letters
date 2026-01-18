@@ -111,15 +111,24 @@ button, .star-wrapper, .scratch-card {
   justify-content: center;
 
   /* [핵심] 클릭 영역 넓히기: 투명한 패딩을 줘서 터치 범위를 확보 */
-  padding: 20px; 
+  padding: 20px 20px 40px 20px;
+
+  pointer-events: none;
+
+  /* background-color: rgba(255, 0, 0, 0.5); 
+  border: 1px solid yellow; */
   
-  z-index: 5; /* 배경보다 위에 */
+  z-index: 1; /* 배경보다 위에 */
 }
 
 /* 클릭 가능한 컨테이너 */
 .star-wrapper.clickable {
+  pointer-events: auto; 
   cursor: pointer;
+
+  z-index: 100 !important; 
 }
+
 /* 클릭 가능한 컨테이너에 마우스 올렸을 때 내부의 별 확대 */
 .star-wrapper.clickable:hover .star {
   transform: scale(1.3);
