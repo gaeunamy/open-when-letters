@@ -831,7 +831,7 @@ const [showTmiModal, setShowTmiModal] = useState(false);
     const now = new Date();
     const currentMonth = now.getMonth();
     const currentDay = now.getDate(); 
-    return true; 
+    //return true; 
     return currentMonth === 3 && currentDay <= 12;
   });
 
