@@ -1,5 +1,4 @@
-fix: optimize star touch area and resolve z-index overlapping
+feat: delay help button visibility
 
-- Increase touch target size for stars (extended bottom padding)
-- Apply 'pointer-events: none' to background stars to prevent blocking
-- Ensure clickable stars have higher z-index and 'pointer-events: auto'
+- Hide guide button until the initial intro text sequence is complete
+- Sync button appearance with the end of the opening message

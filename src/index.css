@@ -1406,8 +1406,24 @@ button, .nav-btn, .moon-button, .diagnosis-btn, .bored-trigger-btn {
   
   touch-action: manipulation;
 
-  /* [핵심] 3초 간격으로 천천히 반짝이는 애니메이션 적용 */
-  animation: guideTwinkle 3s infinite ease-in-out;
+  opacity: 0;
+  pointer-events: none;
+
+  /* 3초 간격으로 천천히 반짝이는 애니메이션 적용 */
+  animation: 
+    guideAppear 0.8s ease-out 6s forwards,
+    guideTwinkle 3s infinite ease-in-out 6.8s;
+}
+
+@keyframes guideAppear {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 0.5;
+    transform: scale(1);
+  }
 }
 
 /* 반짝이는 키프레임 정의 */
