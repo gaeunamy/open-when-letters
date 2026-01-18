@@ -1,5 +1,0 @@
-feat: update Aries effect and fix Usage button
-
-- Update Aries season and fireworks effects (Apr 1–12)
-- Fix click issue on Usage button
-- Add hover transparency and pause effects to Usage button
