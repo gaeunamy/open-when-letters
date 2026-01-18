@@ -219,7 +219,7 @@ const BreathingCircle = () => {
     <>
       <div className={`breathing-circle ${phase}`} />
       <div className="breathing-text">
-        원을 따라 함께 천천히 호흡해 보세요.
+        원을 따라 천천히 호흡해 보세요.
       </div>
     </>
   );
@@ -480,16 +480,16 @@ const stars = [
   { id: 2, x: 38, y: 10, neon: false },
   { id: 3, x: 62, y: 9, neon: false },
   { id: 4, x: 86, y: 11, neon: false },
-  { id: 5, x: 20, y: 16, neon: true, message: "기쁠 때", fullMessage: "무슨 일이야! 좋은 일이지? 나한테 제일 먼저 자랑해야 해. 네가 거기서 웃으면 나도 여기서 행복해져. 오늘 그 기분 마음껏 즐겨!" },
-  { id: 6, x: 48, y: 14, neon: true, message: "심심할 때", fullMessage: "심심하면 뭐 해, 내 생각해야지! 농담이고, 바로 보이스톡 걸어. 시차 따위 무시하고 수다 떨다 보면 시간 순삭될 걸? 대기 중!" },
-  { id: 7, x: 74, y: 17, neon: true, message: "외로울 때", fullMessage: "낯선 곳이라 더 외롭지? 몸은 멀리 있어도 마음은 늘 네 옆에 딱 붙어 있어. 고개 들고 하늘 봐, 우린 같은 하늘 아래 있잖아." },
-  { id: 9, x: 58, y: 20, neon: true, message: "그리울 때", fullMessage: "나도 너 진짜 보고 싶다. 우리 같이 먹던 떡볶이랑 그 수다들 그립지? 한국 오면 맛집 투어부터 하자. 조금만 더 힘내자!" },
+  { id: 5, x: 20, y: 16, neon: true, message: "기쁠 때", fullMessage: "무슨 일이야! 좋은 일이지? 얼른 나한테 자랑해. 네가 거기서 웃으면 나도 여기서 행복해져. 오늘 그 기분 마음껏 즐겨!" },
+  { id: 6, x: 48, y: 14, neon: true, message: "심심할 때", fullMessage: "심심할 땐 역시 가니 생각이지! 농담이고 바로 연락해. 시차 따윈 우리의 수다를 막을 수 없어. 아아 대기 중이다 오바!" },
+  { id: 7, x: 74, y: 17, neon: true, message: "외로울 때", fullMessage: "낮선 곳이라 더 외롭지? 지구 반대편에 있어도 마음은 늘 네 옆에 있어. 고개 들고 하늘 봐, 우린 같은 하늘 아래 있잖아 (오글)" },
+  { id: 9, x: 58, y: 20, neon: true, message: "그리울 때", fullMessage: "보고 싶다 황혜솔~ 우리 함께 아지트에서 나누던 수다들이 그립다. 한국 오면 바로 맛집 투어+수다 20020407시간이야. 조금만 더 힘내자!" },
   { id: 11, x: 10, y: 28, neon: true, message: "힘들 때", fullMessage: "거기서 적응하느라 얼마나 애쓰고 있는지 다 알아. 오늘만큼은 씩씩한 척 말고 그냥 투정 부려도 돼. 다 들어줄게. 고생했어 정말." },
   { id: 12, x: 34, y: 30, neon: true, message: "울적할 때", fullMessage: "기분이 축 처지는 날이네. 이럴 땐 맛있는 거 먹고 따뜻한 이불 속에 쏙 들어가. 내일은 분명 오늘보다 더 괜찮은 하루가 될 거야." },
-  { id: 13, x: 60, y: 27, neon: true, message: "용기가 필요할 때", fullMessage: "겁나고 두려울 수 있어. 당연한 거야. 근데 넌 내가 아는 사람 중 제일 단단한 애잖아. 망설이지 말고 질러! 내가 뒤에서 든든하게 버티고 있을게." },
-  { id: 15, x: 22, y: 34, neon: true, message: "칭찬 받고 싶을 때", fullMessage: "타지에서 혼자 밥 챙겨 먹고, 일하고, 살아가는 것만으로도 넌 진짜 대단해. 오늘 하루도 무사히 보낸 너한테 기립박수! 아주 칭찬해!" },
-  { id: 16, x: 46, y: 36, neon: true, message: "몸이 아플 때", fullMessage: "아픈 게 제일 서러운데 어떡해... 약은 먹었어? 입맛 없어도 밥 꼭 챙겨 먹어야 빨리 낫지. 아프지 마 제발. 내가 대신 아파주고 싶다." },
-  { id: 17, x: 70, y: 33, neon: true, message: "잠이 안 올 때", fullMessage: "생각이 너무 많아서 그래? 억지로 자려고 하지 마. 지금 우리가 보고 있는 달은 같으니까, 내가 보내는 텔레파시나 받아라! 꿈속에서 만나서 놀자." },
+  { id: 13, x: 60, y: 27, neon: true, message: "용기가 필요할 때", fullMessage: "겁나고 두려울 수 있어. 당연한 거야. 그래도 하나만 기억해줘. 넌 내가 아는 사람 중 제일 단단하고 멋있는 친구야. 망설이지 말고 질러! " },
+  { id: 15, x: 22, y: 34, neon: true, message: "칭찬 받고 싶을 때", fullMessage: "타지에서 혼자 밥 챙겨 먹고, 공부하고, 살아가는 것만으로도 넌 진짜 대단해. 오늘 하루도 무사히 보낸 너한테 박수~~!" },
+  { id: 16, x: 46, y: 36, neon: true, message: "몸이 아플 때", fullMessage: "아픈 게 제일 서러운데 어떡해... 약은 먹었어? 입맛 없어도 밥 꼭 챙겨 먹고. 푹 쉬고 얼른 나아라♡" },
+  { id: 17, x: 70, y: 33, neon: true, message: "잠이 안 올 때", fullMessage: "생각이 너무 많아서 그래? 별에게 오늘 하루 있었던 일, 하고 싶은 말 다 전해봐. 네 이야기가 밤하늘을 더욱 빛나게 할 거야." },
   { id: 8, x: 30, y: 22, neon: false },
   { id: 10, x: 82, y: 24, neon: false },
   { id: 14, x: 88, y: 29, neon: false },
@@ -575,7 +575,7 @@ const praiseData = {
   "인간관계": "파워 인싸가 되었다는 소식 들었다.\n역시 넌 E야.\n\n뭐? 남친도 생겼다고? 이 사람 봐라.\n우리한테 바로 얘기해줘야지. 얼른 카톡 ㄱ",
   "갓생·생활": "공부도 하고 친구도 사귀고 파티도 하고\n여행도 다니며 우리랑 연락도 계속하고..\n\n너 이거 갓생이야. 너 갓생러야.",
   "용기·도전": "넌 이미 혼자서 새로운 곳에 가서\n새로운 사람을 만나고 새로운 하루를 보내고 있잖아.\n\n이거 모두 용기가 없으면 할 수 없는 일인 거 알지?\n넌 용감하고 대단한 사람이야. 늘 기억해.",
-  "멘탈관리": "이야 그 상황에서 화도 안 내고/울지도 않고/웃지도 않고/욕도 안 하고 어떻게 참았냐.\n(나였으면 이미 박살 내거나/울거나/욕먹거나 셋 중 하나다)\n\n넌 정말 성숙한 사람이야.\n너가 오늘 참고 넘어간 건 너가 부족해서가 아니야.\n\n걔가 이상한 거지. 웃기는 놈들이네.\n카톡으로 다 풀어!!!",
+  "멘탈관리": "이야 그 상황에서 화도 안 내고/울지도 않고/웃지도 않고/욕도 안 하고 어떻게 참았냐.(나였으면 이미 박살 내거나/울거나/욕먹거나 셋 중 하나다)\n\n넌 정말 성숙한 사람이야.\n너가 오늘 참고 넘어간 건 너가 부족해서가 아니야.\n\n걔가 이상한 거지. 웃기는 놈들이네.\n카톡으로 다 풀어!!!",
   "그냥": "넌 최고야\n\n다 뿌셔버려"
 };
 
@@ -591,13 +591,15 @@ const myPhotos = [
 
 function App() {
 
-  // App.js 안쪽 상단에 추가
 useEffect(() => {
   myPhotos.forEach((src) => {
     const img = new Image();
-    img.src = src; // 브라우저가 이 코드를 읽는 순간 미리 사진을 다운로드합니다.
+    img.src = src; // 브라우저가 이 코드를 읽는 순간 미리 사진을 다운로드
   });
 }, []);
+
+// 사용법 모달 상태 
+const [showGuide, setShowGuide] = useState(false);
 
 // 힘들 때
 const [showBreathing, setShowBreathing] = useState(false);
@@ -676,7 +678,38 @@ useEffect(() => {
     // 저장된 글자 데이터를 다시 배열 형태로 바꿔서 화면에 띄웁니다.
     setUserStars(JSON.parse(savedStars));
   }
-}, []); // []는 사이트 켰을 때 딱 한 번만 실행하라는 뜻이에요!
+}, []); 
+
+// 별 수거 확인 모달 상태
+const [showStarCollectModal, setShowStarCollectModal] = useState(false);
+
+const handleCollectStars = () => {
+  // 별 개수 카운트
+  const count = userStars.length;
+  setCollectedCount(count);
+
+  // 별 삭제
+  setUserStars([]); // 화면에서 삭제
+  localStorage.removeItem('stars'); // 저장소에서 삭제
+
+  setShowStarCollectModal(false);
+  setShowCollectionCompleteModal(true);
+  setShowStarLetter(false); // 편지지도 닫기
+};
+
+const handleCancelCollect = () => {
+  setShowStarCollectModal(false);
+};
+
+const handleCloseCompleteModal = () => {
+  setShowCollectionCompleteModal(false);
+};
+
+// 수거 완료 모달 상태
+const [showCollectionCompleteModal, setShowCollectionCompleteModal] = useState(false);
+
+// 방금 수거한 별의 개수 저장
+const [collectedCount, setCollectedCount] = useState(0);
 
 // 심심할 때-밸겜
 const [showBalanceModal, setShowBalanceModal] = useState(false);
@@ -852,17 +885,23 @@ const [showTmiModal, setShowTmiModal] = useState(false);
   };
 
   const handleReset = () => {
+    // 별 편지지가 열려있을 때는 별 수거 확인 모달 띄우기
+    if (showStarLetter && !isFlying) {
+      setShowStarCollectModal(true);
+      return;
+    }
+  
     if (selectedStar && selectedStar.id === 9 && !showHiddenQuestion && !showHiddenPhoto) {
       setShowHiddenQuestion(true);
       return;
     }
-
+  
     // 모든 상태 초기화
     setSelectedStar(null);
     setShowHiddenQuestion(false);
     setShowHiddenPhoto(false);
-    setShowBoredMenu(false); // 심심 메뉴 닫기
-    setActivePraise(null);   // 칭찬 버튼 초기화
+    setShowBoredMenu(false);
+    setActivePraise(null);
     setPhotoIndex(0); 
     setTouchStart(0);
     setTouchEnd(0);
@@ -870,7 +909,8 @@ const [showTmiModal, setShowTmiModal] = useState(false);
     setShowKaraoke(false);
     setShowHugging(false);
     setShowScratch(false); 
-
+    setShowStarLetter(false);
+  
     if (!isAriesSeason) {
         setActiveStar(null);
         setLastActiveStar(null); 
@@ -1066,7 +1106,9 @@ const [showTmiModal, setShowTmiModal] = useState(false);
       />
 
       {/* 기본 메시지 모달 */}
-      {selectedStar && !showHiddenQuestion && !showHiddenPhoto && !showBoredMenu && !showStarLetter && (
+      {selectedStar && !showHiddenQuestion && !showHiddenPhoto && !showBoredMenu && 
+      !showStarLetter && !showStarCollectModal && !showCollectionCompleteModal 
+      && !showBalanceModal && !showTmiModal && !showKaraoke && (
         <div className={`message-modal active`}>
           <div className="message-title">{selectedStar.message}</div>
           <div className="message-content">
@@ -1162,8 +1204,13 @@ const [showTmiModal, setShowTmiModal] = useState(false);
                 <button 
                   className="bored-trigger-btn" 
                   onClick={(e) => {
-                    e.stopPropagation(); // ← 이 줄 추가!
+                    e.stopPropagation();
+                    e.preventDefault();
                     setShowBoredMenu(true);
+
+                    setTimeout(() => {
+                      setShowBoredMenu(true);
+                    }, 100);
                   }}
                 >
                   여전히 심심하다면?
@@ -1206,7 +1253,7 @@ const [showTmiModal, setShowTmiModal] = useState(false);
                N의 상상력을 자극하라!<br/>밸런스 게임
              </button>
              <button onClick={handleTMI}>
-               가으니의 누구도 궁금해 하지 않은<br/>TMI
+               가으니의 누구도 궁금해 하지 않은 TMI
              </button>
              <button onClick={handleKaraoke}>
                여기가 바로<br/>퀸크루즈 노래연습장
@@ -1340,7 +1387,7 @@ const [showTmiModal, setShowTmiModal] = useState(false);
               브라우저가 오디오를 지원하지 않습니다.
             </audio>
             <div className="karaoke-subtitle">
-              우리의 특별한 노래를 들어보세요 🎵
+              우리의 특별한 노래를 들어봐 🎵
             </div>
           </div>
           <div className="hidden-buttons">
@@ -1389,7 +1436,7 @@ const [showTmiModal, setShowTmiModal] = useState(false);
         </div>
       )} 
       
-      {(showStarLetter || isFlying) && (
+      {(showStarLetter || isFlying) && !showStarCollectModal && !showCollectionCompleteModal && (
         <div className={`star-letter-modal ${isFlying ? 'flying' : 'active'}`}>
           {/* 1. 메시지를 담은 통통한 별 */}
           <div className="star-paper">
@@ -1458,7 +1505,33 @@ const [showTmiModal, setShowTmiModal] = useState(false);
           </div>
         </div>
       )}
-
+      
+      {/* 별 수거 확인 모달 */}
+      {showStarCollectModal && (
+        <div className="hidden-modal active">
+          <div className="hidden-text">별을 수거하시겠습니까?</div>
+          <div className="hidden-buttons">
+            <button onClick={handleCollectStars}>YES</button>
+            <button onClick={handleCancelCollect}>NO</button>
+          </div>
+        </div>
+      )} 
+      
+      {/* 수거 완료 알림 모달 */}
+      {showCollectionCompleteModal && (
+        <div className="hidden-modal active">
+          <div className="hidden-text">
+            별을 안전하게 수거하였습니다.<br/>
+            <span style={{ fontSize: '0.85rem', color: '#ffe87f', opacity: 0.8 }}>
+              (수거한 별: {collectedCount}개)
+            </span>
+          </div>
+          <div className="hidden-buttons">
+            <button onClick={handleCloseCompleteModal}>확인</button>
+          </div>
+        </div>
+      )}
+      
       <button
         className={`moon-button ${selectedStar ? "active" : ""}`}
         onClick={handleReset}
@@ -1466,6 +1539,56 @@ const [showTmiModal, setShowTmiModal] = useState(false);
       />
 
       <div className="footer-copyright">Developed by Ganiii</div>
+
+      <button 
+        className={`guide-button ${selectedStar || showHiddenQuestion || showHiddenPhoto || showBoredMenu || showStarLetter || showDiagnosis || showHugging || showScratch ? "hidden" : ""} ${showGuide ? "paused" : ""}`}
+        onClick={() => setShowGuide(true)}
+      >
+        ?
+      </button>
+
+      {/* 사용법 모달 */}
+      {showGuide && (
+        <div className="hidden-modal active guide-modal-content">
+          <div className="guide-title">별을 여행하는 법</div>
+          
+          <div className="guide-body">
+            <div className="guide-step">
+              <span className="step-num">1.</span>
+              <p>고요한 밤하늘을 가만히 올려다보세요.</p>
+            </div>
+            <div className="guide-step">
+              <span className="step-num">2.</span>
+              <p>유난히 반짝이며 말을 거는 별을 찾아보세요.</p>
+            </div>
+            <div className="guide-step">
+              <span className="step-num">3.</span>
+              <p>지금 내 마음에 닿는 별을 선택해 위로를 받아보세요.</p>
+            </div>
+            <div className="guide-step">
+              <span className="step-num">4.</span>
+              <p>숨겨진 선물이 있다면 마음껏 즐겨주세요.</p>
+            </div>
+
+            <hr className="guide-divider" />
+
+            <div className="guide-extra">
+              <p>✨ <b>나만의 별자리</b></p>
+              <p className="sub-text">별과 별 사이를 이어 그림을 그려보세요.</p>
+              
+              <p>💌 <b>별에게 편지 쓰기</b></p>
+              <p className="sub-text">'잠이 안 올 때' 별을 찾아 45자 이내의 편지를 띄워보세요. 나의 이야기가 별이 되어 떠오릅니다.</p>
+              
+              <p>🌙 <b>달의 비밀</b></p>
+              <p className="sub-text">오른쪽 위 달을 누르면 처음으로 돌아가요. '잠이 안 올 때' 별에서는 띄운 별들을 수거할 수도 있어요.</p>
+            </div>
+          </div>
+
+          <div className="hidden-buttons">
+            <button onClick={() => setShowGuide(false)}>닫기</button>
+          </div>
+        </div>
+      )}
 
     </div>
   );

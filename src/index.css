@@ -57,6 +57,18 @@ body {
   overflow: hidden;
 }
 
+button, .star-wrapper, .scratch-card {
+  /* 더블탭 확대 대기(0.3초)를 무시하고 즉시 클릭 인식 */
+  touch-action: manipulation; 
+  
+  /* 터치 시 텍스트가 블록 잡히는 현상 방지 */
+  user-select: none; 
+  -webkit-user-select: none;
+  
+  /* 클릭 시 생기는 반투명한 회색 박스 제거 */
+  -webkit-tap-highlight-color: transparent;
+}
+
 /* ===== Night Sky Background ===== */
 .sky {
   position: relative;
@@ -140,7 +152,7 @@ body {
     0 0 24px rgba(255, 232, 127, 0.2);
   opacity: 0.6;
   transition: transform 2.5s ease-in-out, opacity 2.5s ease-in-out;
-  animation: messageSparkle 4s ease-out forwards;
+  animation: messageSparkle 6s ease-out;
 }
 
 /* 별 반짝이기 */
@@ -248,7 +260,7 @@ body {
   opacity: 0;
   transform: scale(0.8);
   transition: all 0.5s ease-out;
-  z-index: 30;
+  z-index: 150;
   pointer-events: none;
 }
 .moon-button.active { opacity: 1; transform: scale(1); pointer-events: auto; }
@@ -326,9 +338,9 @@ body {
   background: rgba(11, 29, 58, 1);
   border: 2px solid #ffe87f;
   border-radius: 20px;
-  padding: 40px;
+  padding: 40px 20px;
   text-align: center;
-  z-index: 50;
+  z-index: 200;
   transition: all 0.5s ease;
   pointer-events: none;
 }
@@ -341,8 +353,11 @@ body {
 
 .hidden-text {
   color: #ffe87f;
-  font-size: 1.2rem;
+  font-size: 1.0rem;
   margin-bottom: 30px;
+
+  word-break: keep-all;
+  overflow-wrap: break-word;
 }
 
 .hidden-buttons {
@@ -359,7 +374,7 @@ body {
   color: #ffe87f;
   padding: 10px 40px;
   border-radius: 30px;
-  font-size: 1.1rem;
+  font-size: 1.0rem;
   cursor: pointer;
   transition: all 0.3s;
 }
@@ -702,7 +717,7 @@ body {
 
 .balance-title {
   font-family: 'Georgia', serif;
-  font-size: 1.6rem;
+  font-size: 1.5rem;
   letter-spacing: 2px;
   color: #ffe87f;
 }
@@ -1129,13 +1144,19 @@ body {
   transition: all 1.5s ease-in-out;
 }
 
+/* 별 모양과 버튼만 숨김 */
+.star-letter-modal.hidden .star-paper,
+.star-letter-modal.hidden .star-letter-buttons {
+  display: none;
+}
+
 /* 편지지가 빛으로 터지는 애니메이션 */
 .star-letter-modal.flying {
   background: transparent;
 }
 
 .star-letter-modal.flying .star-paper {
-  animation: explodeToLight 3s ease-out forwards;
+  animation: explodeToLight 4s ease-out forwards;
   background: radial-gradient(circle, #ffe87f 0%, #ffc864 60%, transparent 100%);
   border-radius: 50%;
 }
@@ -1179,6 +1200,10 @@ body {
     opacity: 0.6; 
     filter: none;
   }
+}
+
+.star-letter-modal.hidden {
+  display: none;
 }
 
 .user-star {
@@ -1327,4 +1352,178 @@ body {
       0 0 8px rgba(255, 232, 127, 0.6),
       0 0 16px rgba(255, 232, 127, 0.4);
   }
+}
+
+/* 1. 모든 버튼에 즉각 반응 강제 적용 */
+button, .nav-btn, .moon-button, .diagnosis-btn, .bored-trigger-btn {
+  touch-action: manipulation !important;
+}
+
+/* 모바일 호버 끈적임 차단 */
+@media (hover: none) {
+  button:hover, .nav-btn:hover, .moon-button:hover, .diagnosis-btn:hover {
+    /* 모바일(터치 기기)에서는 호버 효과가 아예 나타나지 않도록 무시 */
+    transform: none !important;
+    background: inherit !important;
+  }
+}
+
+/* 왼쪽 하단 물음표 버튼 */
+.guide-button {
+  position: fixed;
+  bottom: 18px;
+  left: 15px;
+  
+  width: 40px; 
+  height: 40px;
+  
+  background: transparent;
+  border: none;
+  
+  /* 기본 투명도 설정 */
+  color: rgba(255, 232, 127, 0.6); 
+  font-size: 1.2rem;
+  font-weight: normal;
+  
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 150; 
+  transition: all 0.5s ease-out;
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  touch-action: manipulation;
+
+  /* [핵심] 3초 간격으로 천천히 반짝이는 애니메이션 적용 */
+  animation: guideTwinkle 3s infinite ease-in-out;
+}
+
+/* 반짝이는 키프레임 정의 */
+@keyframes guideTwinkle {
+  0% {
+    opacity: 0.5;
+    text-shadow: 0 0 5px rgba(255, 232, 127, 0.2);
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1; /* 가장 밝을 때 */
+    text-shadow: 0 0 15px rgba(255, 232, 127, 0.6), 
+                 0 0 25px rgba(255, 232, 127, 0.2);
+    transform: scale(1.05); /* 아주 살짝 커짐 */
+  }
+  100% {
+    opacity: 0.5;
+    text-shadow: 0 0 5px rgba(255, 232, 127, 0.2);
+    transform: scale(1);
+  }
+}
+
+/* 마우스 올렸을 때 (애니메이션 멈추고 밝게 유지) */
+.guide-button:hover {
+  animation: none; /* 호버 시엔 깜빡임 멈춤 */
+  color: rgba(255, 232, 127, 1);
+  transform: scale(1.1);
+  text-shadow: 0 0 12px rgba(255, 232, 127, 0.8), 
+               0 0 25px rgba(255, 232, 127, 0.4);
+}
+
+/* 숨김 상태일 때 */
+.guide-button.hidden {
+  opacity: 0;
+  pointer-events: none;
+  animation: none; /* 숨겨질 땐 애니메이션도 꺼서 성능 절약 */
+}
+
+/* 가이드 모달 내부 디자인 */
+.guide-modal-content {
+  text-align: left; /* 설명글 왼쪽 정렬 */
+  max-width: 450px; /* 너무 넓지 않게 */
+  width: 90%;
+  max-height: 80vh; /* 화면 꽉 차지 않게 */
+  display: flex;
+  flex-direction: column;
+}
+
+.guide-title {
+  text-align: center;
+  font-size: 1.4rem;
+  color: #ffe87f;
+  margin-bottom: 25px;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+/* 내용 스크롤 영역 */
+.guide-body {
+  flex: 1;
+  overflow-y: auto;
+  padding-right: 10px;
+}
+
+/* 스크롤바 디자인 */
+.guide-body::-webkit-scrollbar { width: 4px; }
+.guide-body::-webkit-scrollbar-thumb {
+  background: rgba(255, 232, 127, 0.3);
+  border-radius: 4px;
+}
+
+/* 단계별 설명 */
+.guide-step {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 12px;
+  font-size: 1rem;
+  color: #e8f4ff;
+  line-height: 1.5;
+  word-break: keep-all; /* 단어 끊김 방지 */
+}
+
+.step-num {
+  color: #ffe87f;
+  font-weight: bold;
+  min-width: 15px;
+}
+
+/* 구분선 */
+.guide-divider {
+  border: 0;
+  height: 1px;
+  background: rgba(255, 232, 127, 0.3);
+  margin: 20px 0;
+}
+
+/* 추가 팁 영역 */
+.guide-extra {
+  font-size: 0.95rem;
+  color: #e8f4ff;
+}
+
+.guide-extra p {
+  margin-bottom: 5px;
+  word-break: keep-all;
+}
+
+.guide-extra b {
+  color: #ffe87f;
+}
+
+.guide-extra .sub-text {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.6);
+  margin-bottom: 15px;
+  padding-left: 10px;
+  border-left: 2px solid rgba(255, 232, 127, 0.3); /* 왼쪽 노란 선 */
+  line-height: 1.4;
+}
+
+/* 도움말 창이 열렸을 때 (깜빡임 멈춤) */
+.guide-button.paused {
+  animation: none; /* 애니메이션 끄기 */
+  opacity: 1;      /* 투명도 100%로 고정 (또는 0.6 등으로 은은하게 고정 가능) */
+  transform: scale(1); /* 크기 고정 */
+  
+  /* 선택된 느낌을 주기 위해 살짝 밝게 유지하고 싶다면 아래 주석 해제 */
+  /* color: rgba(255, 232, 127, 0.9); */
 }
