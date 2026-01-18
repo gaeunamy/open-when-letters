@@ -644,18 +644,20 @@ const handleTextChange = (e) => {
 const handleSendStar = () => {
   if (!starMessage.trim()) return;
 
-  setIsFlying(true); // 애니메이션 시작
+  const targetX = Math.random() * 85 + 8;
+  const targetY = Math.random() * 55 + 8;
 
-  // 1.5초 뒤(날아가는 모션 완료 후) 실제 하늘에 추가
+  setSelectedStar(null);
+  setIsFlying(true);
+
   setTimeout(() => {
     const newStar = {
       id: Date.now(),
-      x: Math.random() * 90 + 5, // 랜덤 위치
-      y: Math.random() * 50 + 5,
+      x: targetX,
+      y: targetY,
       message: starMessage
     };
 
-    // 기존 별들에 새 별을 합친 새 리스트를 변수로 만듦
     const updatedStars = [...userStars, newStar];
     
     setUserStars(updatedStars);
@@ -664,8 +666,7 @@ const handleSendStar = () => {
     setIsFlying(false);
     setShowStarLetter(false);
     setStarMessage("");
-    // new Audio('/ting.mp3').play();
-  }, 1500);
+  }, 800);
 };
 
 // 사이트 접속 시 저장된 별을 불러오는 기능입니다.
@@ -1035,8 +1036,14 @@ const [showTmiModal, setShowTmiModal] = useState(false);
         {userStars.map(star => (
           <div 
             key={star.id} 
+            data-star-id={star.id}
             className="user-star star-message star-active" 
-            style={{ left: `${star.x}%`, top: `${star.y}%` }}
+            style={{ 
+              position: 'absolute',
+              left: `${star.x}%`, 
+              top: `${star.y}%`,
+              transform: 'translate(-50%, -50%)'
+            }}
             onClick={() => alert(`가은이에게 보낸 별: ${star.message}`)} // 클릭 시 메시지 확인
           />
         ))}
@@ -1154,7 +1161,10 @@ const [showTmiModal, setShowTmiModal] = useState(false);
               <div style={{ marginTop: '20px' }}>
                 <button 
                   className="bored-trigger-btn" 
-                  onClick={() => setShowBoredMenu(true)}
+                  onClick={(e) => {
+                    e.stopPropagation(); // ← 이 줄 추가!
+                    setShowBoredMenu(true);
+                  }}
                 >
                   여전히 심심하다면?
                 </button>
@@ -1379,7 +1389,7 @@ const [showTmiModal, setShowTmiModal] = useState(false);
         </div>
       )} 
       
-      {showStarLetter && (
+      {(showStarLetter || isFlying) && (
         <div className={`star-letter-modal ${isFlying ? 'flying' : 'active'}`}>
           {/* 1. 메시지를 담은 통통한 별 */}
           <div className="star-paper">
