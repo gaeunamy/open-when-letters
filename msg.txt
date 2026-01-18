@@ -1,4 +1,5 @@
-feat: delay help button visibility
+feat: update Aries effect and fix Usage button
 
-- Hide guide button until the initial intro text sequence is complete
-- Sync button appearance with the end of the opening message
+- Update Aries season and fireworks effects (Apr 1–12)
+- Fix click issue on Usage button
+- Add hover transparency and pause effects to Usage button

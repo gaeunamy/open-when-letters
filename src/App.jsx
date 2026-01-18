@@ -97,6 +97,108 @@ const FireworkCanvas = () => {
   );
 };
 
+// [양자리 시즌용 - 금색/은색 폭죽]
+const GoldenFireworkCanvas = () => {
+  const canvasRef = useRef(null);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+    let animationId;
+
+    const resizeCanvas = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    };
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    const createParticle = (x, y, color) => {
+      const particleCount = 40;
+      for (let i = 0; i < particleCount; i++) {
+        particles.push({
+          x: x, y: y,
+          radius: Math.random() * 4 + 1.5,
+          color: color,
+          velocity: {
+            x: (Math.random() - 0.5) * 7,
+            y: (Math.random() - 0.5) * 7
+          },
+          alpha: 1,
+          decay: Math.random() * 0.012 + 0.004,
+          sparkle: Math.random() > 0.5
+        });
+      }
+    };
+
+    const colors = ['#ffd700', '#c0c0c0', '#ffed4e', '#e8e8e8', '#f4c542', '#b8b8b8'];
+    
+    let timer = 0;
+    const animate = () => {
+      animationId = requestAnimationFrame(animate);
+
+      // [핵심 수정] 검은색으로 칠하지 않고 투명도를 깎아내어 잔상을 만듭니다.
+      ctx.globalCompositeOperation = 'destination-out';
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.15)'; // 이 숫자가 낮을수록 잔상이 길게 남습니다.
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.globalCompositeOperation = 'source-over';
+
+      timer++;
+      if (timer % 20 === 0) {
+        const x = Math.random() * canvas.width;
+        const y = Math.random() * (canvas.height * 0.5);
+        const color = colors[Math.floor(Math.random() * colors.length)];
+        createParticle(x, y, color);
+      }
+
+      particles.forEach((p, index) => {
+        if (p.alpha > 0) {
+          p.velocity.y += 0.04;
+          p.x += p.velocity.x;
+          p.y += p.velocity.y;
+          p.alpha -= p.decay;
+
+          ctx.save();
+          ctx.globalAlpha = p.alpha;
+          if (p.sparkle) {
+            ctx.shadowBlur = 15;
+            ctx.shadowColor = p.color;
+          }
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+          ctx.fillStyle = p.color;
+          ctx.fill();
+          ctx.restore();
+        } else {
+          particles.splice(index, 1);
+        }
+      });
+    };
+
+    animate();
+
+    return () => {
+      window.removeEventListener('resize', resizeCanvas);
+      cancelAnimationFrame(animationId);
+    };
+  }, []);
+
+  return (
+    <canvas 
+      ref={canvasRef}
+      style={{
+        position: 'fixed',
+        top: 0, left: 0,
+        width: '100%', height: '100%',
+        pointerEvents: 'none', // 클릭 통과 보장
+        zIndex: 15, // 별자리선(1)과 모달(20) 사이
+        background: 'transparent' // 배경 투명 명시
+      }}
+    />
+  );
+};
+
 const GaeunDiagnosis = ({ onBack }) => {
   const [phase, setPhase] = useState('idle'); // 'idle' | 'recording' | 'processing' | 'result'
   const [volume, setVolume] = useState(0);
@@ -579,6 +681,8 @@ useEffect(() => {
 // 사용법 모달 상태 
 const [showGuide, setShowGuide] = useState(false);
 
+const [showFireworks, setShowFireworks] = useState(false);
+
 // 힘들 때
 const [showBreathing, setShowBreathing] = useState(false);
 
@@ -726,9 +830,9 @@ const [showTmiModal, setShowTmiModal] = useState(false);
   const [isAriesSeason] = useState(() => {
     const now = new Date();
     const currentMonth = now.getMonth();
-    const currentDay = now.getDate();
+    const currentDay = now.getDate(); 
     return true; 
-    return currentMonth === 3 && currentDay <= 19;
+    return currentMonth === 3 && currentDay <= 12;
   });
 
   const starsLayerRef = useRef(null);
@@ -755,6 +859,14 @@ const [showTmiModal, setShowTmiModal] = useState(false);
           setActivatedAriesStars(prev => [...prev, id]); 
         }, activationTimings[index]);
       });
+      
+      // 마지막 별 활성화 1초 후 폭죽 시작
+      const lastTiming = activationTimings[activationTimings.length - 1];
+      setTimeout(() => {
+        setShowFireworks(true);
+        // 15초 후 폭죽 종료
+        setTimeout(() => setShowFireworks(false), 15000);
+      }, lastTiming + 1000);
     }
   }, [showConstellation, isAriesSeason]);
 
@@ -989,9 +1101,9 @@ const [showTmiModal, setShowTmiModal] = useState(false);
             style={{ animation: `drawPath 30s linear forwards` }}
           />
         </svg>
-      )}
-
-      {/* [수정] 별 레이어 - 클릭 영역 확장을 위해 구조 변경 */}
+      )} 
+      
+      {/* 별 레이어 - 클릭 영역 확장을 위해 구조 변경 */}
       <div className="stars-layer" ref={starsLayerRef}>
         {stars.map((star) => {
           const isTargetStar = isAriesSeason 
@@ -1056,6 +1168,11 @@ const [showTmiModal, setShowTmiModal] = useState(false);
 
       {selectedStar && selectedStar.id === 5 && !showHiddenQuestion && !showHiddenPhoto && (
         <FireworkCanvas />
+      )} 
+      
+      {/* 양자리 시즌 폭죽 (금색/은색) */}
+      {isAriesSeason && showFireworks && !selectedStar && (
+        <GoldenFireworkCanvas />
       )}
 
       <div
@@ -1503,7 +1620,11 @@ const [showTmiModal, setShowTmiModal] = useState(false);
 
       <button 
         className={`guide-button ${selectedStar || showHiddenQuestion || showHiddenPhoto || showBoredMenu || showStarLetter || showDiagnosis || showHugging || showScratch ? "hidden" : ""} ${showGuide ? "paused" : ""}`}
-        onClick={() => setShowGuide(true)}
+        onClick={(e) => {
+          e.stopPropagation();
+          setShowGuide(true);
+        }}
+        style={{ zIndex: 999 }}
       >
         ?
       </button>
