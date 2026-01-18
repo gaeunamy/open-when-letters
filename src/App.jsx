@@ -517,28 +517,6 @@ const stars = [
 
 const ariesPathIds = [5, 6, 9, 13];
 
-const dailyMessages = {
-  1: "새로운 시작, 당신의 용기를 응원합니다.",
-  2: "망설이지 말고 한 걸음 더 내디뎌 보세요.",
-  3: "당신의 열정이 길을 밝혀줄 거예요.",
-  4: "오늘은 스스로를 더 믿어주세요.",
-  5: "작은 불꽃이 큰 변화를 만듭니다.",
-  6: "솔직한 마음이 가장 큰 무기입니다.",
-  7: "도전을 두려워하지 마세요.",
-  8: "당신은 생각보다 훨씬 강한 사람입니다.",
-  9: "오늘 흘린 땀방울이 내일의 별이 됩니다.",
-  10: "잠시 멈춰서 숨을 고르는 것도 용기입니다.",
-  11: "당신의 직관을 믿고 나아가세요.",
-  12: "따뜻한 말 한마디가 기적을 만듭니다.",
-  13: "포기하지 않는 마음이 가장 아름답습니다.",
-  14: "당신의 에너지가 주변을 밝힙니다.",
-  15: "가장 나다운 모습으로 빛나세요.",
-  16: "오늘 하루, 온전히 당신을 위해 쓰세요.",
-  17: "실수는 성장을 위한 디딤돌입니다.",
-  18: "당신의 앞길에 행운이 가득하기를.",
-  19: "지금 그대로도 충분히 멋집니다."
-};
-
 const balanceGameList = [
   { id: 1, q1: "웃음 참아야 할 상황에서만 터짐", q2: "웃어도 되는 상황에서만 웃음 안 나옴" },
   { id: 2, q1: "평생 양말이 항상 한 짝씩만 사라짐", q2: "양말은 멀쩡한데 신발에서 항상 삑삑 소리남" },
@@ -727,9 +705,6 @@ const [showTmiModal, setShowTmiModal] = useState(false);
   const [clickPosition, setClickPosition] = useState({ x: 50, y: 50 });
   const [showConstellation, setShowConstellation] = useState(false);
   const [activatedAriesStars, setActivatedAriesStars] = useState([]);
-  
-  const [showDailyMessage, setShowDailyMessage] = useState(false);
-  const [todayMessage, setTodayMessage] = useState("");
 
   const [showHiddenQuestion, setShowHiddenQuestion] = useState(false);
   const [showHiddenPhoto, setShowHiddenPhoto] = useState(false);
@@ -746,13 +721,13 @@ const [showTmiModal, setShowTmiModal] = useState(false);
   const [touchStart, setTouchStart] = useState(0);
   const [touchEnd, setTouchEnd] = useState(0);
 
-  const activationTimings = [0, 20200, 24100, 30000];
+  const activationTimings = [0, 2020, 3110, 3800];
 
   const [isAriesSeason] = useState(() => {
     const now = new Date();
     const currentMonth = now.getMonth();
     const currentDay = now.getDate();
-    // return true; 
+    return true; 
     return currentMonth === 3 && currentDay <= 19;
   });
 
@@ -763,20 +738,12 @@ const [showTmiModal, setShowTmiModal] = useState(false);
 
   useEffect(() => {
     if (isAriesSeason) {
-      const today = new Date().getDate(); 
-      setTodayMessage(dailyMessages[today] || dailyMessages[1]);
-
       const constellationTimer = setTimeout(() => {
         setShowConstellation(true);
       }, 7000);
 
-      const messageTimer = setTimeout(() => {
-        setShowDailyMessage(true);
-      }, 5000);
-
       return () => {
         clearTimeout(constellationTimer);
-        clearTimeout(messageTimer);
       };
     }
   }, [isAriesSeason]);
@@ -1009,8 +976,6 @@ const [showTmiModal, setShowTmiModal] = useState(false);
         당신을 위한 따뜻한 이야기가 기다리고 있습니다.
       </div>
 
-      <div className={`season-moon ${showConstellation && isAriesSeason ? "active" : ""}`} />
-
       {showConstellation && (
         <svg 
           className="constellation-svg"
@@ -1087,10 +1052,6 @@ const [showTmiModal, setShowTmiModal] = useState(false);
             onClick={() => alert(`가은이에게 보낸 별: ${star.message}`)} // 클릭 시 메시지 확인
           />
         ))}
-      </div>
-
-      <div className={`daily-message-container ${showDailyMessage ? "active" : ""}`}>
-        {todayMessage}
       </div>
 
       {selectedStar && selectedStar.id === 5 && !showHiddenQuestion && !showHiddenPhoto && (

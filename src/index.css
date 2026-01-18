@@ -110,8 +110,9 @@ button, .star-wrapper, .scratch-card {
   align-items: center;
   justify-content: center;
 
-  /* [핵심] 클릭 영역 넓히기: 투명한 패딩을 줘서 터치 범위를 확보 */
-  padding: 20px 20px 40px 20px;
+
+  /* 클릭 영역 넓히기: 투명한 패딩을 줘서 터치 범위를 확보 */
+  padding: 40px;
 
   pointer-events: none;
 
@@ -313,7 +314,7 @@ button, .star-wrapper, .scratch-card {
 /* 하단 일일 메시지 컨테이너 */
 .daily-message-container {
   position: fixed;
-  top: 50%; 
+  top: 70%; 
   left: 50%;
   transform: translate(-50%, 0);
   
