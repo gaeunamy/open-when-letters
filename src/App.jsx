@@ -1533,7 +1533,7 @@ const [showTmiModal, setShowTmiModal] = useState(false);
       )}
       
       <button
-        className={`moon-button ${selectedStar ? "active" : ""}`}
+        className={`moon-button ${selectedStar && !showHugging && !showScratch && !showBreathing ? "active" : ""}`}
         onClick={handleReset}
         aria-label="초기 화면으로 돌아가기"
       />

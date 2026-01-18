@@ -1,0 +1,15 @@
+feat: enhance mobile UX, animations, and styles
+
+Mobile & Interaction:
+- Remove 300ms touch delay globally
+- Prevent sticky hover effects on mobile
+- Fix ghost click on 'Bored' button using delay
+
+Animation:
+- Fix stuttering motion in message transitions
+- Increase blinking interval (4s -> 6s)
+
+UI & Content:
+- Add 'Usage Guide' modal and help button
+- Optimize hidden modal padding and typography
+- Update situational message text
