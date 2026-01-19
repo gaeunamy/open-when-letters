@@ -242,6 +242,10 @@ const HuggingButton = () => {
     if (burstTimerRef.current) clearTimeout(burstTimerRef.current);
 
     intervalRef.current = setInterval(() => {
+      if (navigator.vibrate) {
+        navigator.vibrate(40); 
+      }
+      
       count += 0.1;
       setProgress(count);
       
@@ -826,6 +830,8 @@ const [showTmiModal, setShowTmiModal] = useState(false);
     }
 
     if (!canClick) return;
+
+    if (isAriesSeason) return;
 
     const targetStars = isAriesSeason 
       ? stars.filter(s => ariesPathIds.includes(s.id))
