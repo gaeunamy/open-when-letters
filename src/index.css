@@ -108,6 +108,10 @@ button, .star-wrapper, .scratch-card {
   padding: 40px; /* 터치 범위 확보 */
   pointer-events: none;
   z-index: 1;
+
+  /* [테스트용] 클릭 범위 확인
+  background-color: rgba(255, 0, 0, 0.3);
+  border: 1px solid yellow; */
 }
 
 /* 클릭 가능한 컨테이너 */
@@ -153,7 +157,7 @@ button, .star-wrapper, .scratch-card {
 
 /* 별 반짝이기 */
 .star-active {
-  transform: scale(2.5) !important;
+  transform: scale(2.5);
   opacity: 1;
 }
 
@@ -168,6 +172,9 @@ button, .star-wrapper, .scratch-card {
   transition: opacity 2.5s ease-in-out, transform 2.5s ease-in-out;
   white-space: nowrap;
   text-shadow: 0 0 4px rgba(255, 232, 127, 0.8);
+
+  /* [테스트용] 텍스트 숨김
+  display: none !important; */
 }
 
 .star-message-label.active {
@@ -709,3 +716,25 @@ button, .nav-btn, .moon-button, .diagnosis-btn, .bored-trigger-btn { touch-actio
 .guide-extra b { color: #ffe87f; }
 .guide-extra .sub-text { font-size: 0.85rem; color: rgba(255, 255, 255, 0.6); margin-bottom: 15px; padding-left: 10px; border-left: 2px solid rgba(255, 232, 127, 0.3); line-height: 1.4; }
 .guide-button.paused { animation: none; opacity: 1; transform: scale(1); }
+
+/* 양자리별 빛번짐 효과 (크기 변화 X, 빛만 일렁임) */
+@keyframes starGlow {
+  0%, 100% {
+    /* 커진 상태 (등장 효과가 끝난 시점과 동일) */
+    transform: scale(2.5);
+    box-shadow: 
+      0 0 15px rgba(255, 255, 255, 1),
+      0 0 30px rgba(255, 232, 127, 1),
+      0 0 60px rgba(255, 232, 127, 0.8),
+      0 0 100px rgba(255, 232, 127, 0.5);
+    opacity: 1;
+  }
+  50% {
+    /* 작아질 때 (숨 고르기) */
+    transform: scale(1.8);
+    box-shadow: 
+      0 0 10px rgba(255, 232, 127, 0.5),
+      0 0 20px rgba(255, 232, 127, 0.3);
+    opacity: 0.8;
+  }
+}

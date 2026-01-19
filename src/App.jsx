@@ -723,6 +723,9 @@ const [showTmiModal, setShowTmiModal] = useState(false);
     return currentMonth === 3 && currentDay <= 12;
   });
 
+  // [테스트용] 양자리 
+  // const [isAriesSeason] = useState(true);
+
   const starsLayerRef = useRef(null);
   const intervalRef = useRef(null);
   const timeoutRef = useRef(null);
@@ -997,10 +1000,16 @@ const [showTmiModal, setShowTmiModal] = useState(false);
             isActive = activeStar === star.id;
           }
 
-          const isClickable = !isAriesSeason && isTargetStar && (isActive || lastActiveStar === star.id);
+          const isClickable = isAriesSeason 
+          ? (isTargetStar && isActive) 
+          : (isTargetStar && (isActive || lastActiveStar === star.id));
+
+          const activeStyle = (isAriesSeason && isActive) ? {
+            animation: `starGlow ${2 + (star.id % 4) * 0.5}s infinite ease-in-out`,
+            animationDelay: '2.5s' /* 중요: 등장 효과(2.5s)가 끝난 뒤 실행 */
+          } : {};
 
           return (
-            // [Wrapper] 위치와 클릭 이벤트를 담당하는 투명 컨테이너
             <div 
               key={star.id}
               className={`star-wrapper ${isClickable ? "clickable" : ""}`}
@@ -1009,15 +1018,16 @@ const [showTmiModal, setShowTmiModal] = useState(false);
                 if (isClickable) handleStarClick(star, e);
               }}
             >
-              {/* 별 본체 */}
+              {/* 별 본체에 activeStyle(애니메이션) 적용 */}
               <div
                 className={`star ${
                   isTargetStar
                     ? `star-message ${isActive ? "star-active" : ""}`
                     : "star-background"
                 }`}
+                style={activeStyle} 
               />
-
+        
               {/* 텍스트 라벨 */}
               {isTargetStar && star.message && !isAriesSeason && (
                 <div
