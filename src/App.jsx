@@ -98,7 +98,11 @@ const FireworkCanvas = () => {
 };
 
 const GaeunDiagnosis = ({ onBack }) => {
-  const [phase, setPhase] = useState('idle'); // 'idle' | 'recording' | 'processing' | 'result'
+  // 1. 초기 상태 설정
+  const [phase, setPhase] = useState('intro'); 
+  // [중요] 초기값을 ''(빈 문자열)로 설정 -> CSS에서 opacity: 0 상태로 시작
+  const [fadeClass, setFadeClass] = useState(''); 
+
   const [volume, setVolume] = useState(0);
   const [randomResult, setRandomResult] = useState("");
   
@@ -113,6 +117,32 @@ const GaeunDiagnosis = ({ onBack }) => {
     "마음이 서러워서 생긴 병이네요. \n가은쌤이 실시간으로 응원 기운 보내는 중...",
     "이건 약도 없어요. \n가은이랑 맛있는 거 먹어야 낫는 병입니다. 한국 올 날만 기다리기!"
   ];
+
+  // 2. 인트로 애니메이션 효과
+  useEffect(() => {
+    if (phase === 'intro') {
+      // (1) 0.1초 뒤에 'fade-in' 클래스 추가 -> 서서히 나타남
+      const fadeInTimer = setTimeout(() => {
+        setFadeClass('fade-in'); 
+      }, 100);
+
+      // (2) 3초 뒤 'fade-out' 클래스로 변경 -> 서서히 사라짐
+      const fadeOutTimer = setTimeout(() => {
+        setFadeClass('fade-out'); // [수정] setIntroFade -> setFadeClass
+      }, 3000);
+
+      // (3) 4초 뒤(사라진 후) 다음 단계로 이동
+      const nextPhaseTimer = setTimeout(() => {
+        setPhase('idle');
+      }, 4000);
+
+      return () => {
+        clearTimeout(fadeInTimer);
+        clearTimeout(fadeOutTimer);
+        clearTimeout(nextPhaseTimer);
+      };
+    }
+  }, [phase]);
 
   // 음성 감지 시작
   const startListening = async () => {
@@ -141,14 +171,13 @@ const GaeunDiagnosis = ({ onBack }) => {
     }
   };
 
-  // 진단 시작 (버튼에서 손 뗄 때)
+  // 진단 시작
   const handleStop = () => {
     if (animationRef.current) cancelAnimationFrame(animationRef.current);
     if (audioContextRef.current) audioContextRef.current.close();
     
     setPhase('processing');
     
-    // 3초간 "진단 중" 반짝인 후 결과 발표
     setTimeout(() => {
       const pick = results[Math.floor(Math.random() * results.length)];
       setRandomResult(pick);
@@ -157,49 +186,64 @@ const GaeunDiagnosis = ({ onBack }) => {
   };
 
   return (
-    <div className="diagnosis-container" style={{ textAlign: 'center' }}>
-      {/* 배경 버스트 효과 (결과 나올 때만) */}
+    <div className="diagnosis-container" style={{ textAlign: 'center', position: 'relative', width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+      
+      {/* 3. 인트로 레이어 */}
+      {/* [수정] 변수명 introFade -> fadeClass로 변경 */}
+      {phase === 'intro' && (
+        <div className={`intro-overlay ${fadeClass}`}>
+          <div className="intro-message">
+            안녕하세요<br/>
+            <b>가은쌤의 마음클리닉</b>입니다.<br/><br/>
+            <span style={{ fontSize: '1rem', opacity: 0.9 }}>
+              버튼을 누르고 증상을 얘기해 주세요.
+            </span>
+          </div>
+        </div>
+      )}
+
       <div className="color-burst-container">
         <div className={`color-burst-effect ${phase === 'result' ? 'active' : ''}`} />
       </div>
 
-      {phase !== 'result' ? (
-        <>
-          {/* 중앙 구슬 (볼륨에 따라 반응) */}
-          <div 
-            className={`breathing-circle ${phase === 'processing' ? 'processing-pulse' : ''}`}
-            style={{ 
-              transform: `scale(${1 + volume / 100})`,
-              margin: '0 auto 100px'
-            }} 
-          />
-          
-          <div className="diagnosis-guide">
-            {phase === 'idle' && "버튼을 누르고 어디가 아픈지 말해줘"}
-            {phase === 'recording' && "가은쌤이 듣고 있어... (말하는 중)"}
-            {phase === 'processing' && <span className="flashing-text">진단 중... 가은쌤 분석 중...</span>}
-          </div>
+      {phase !== 'intro' && (
+        phase !== 'result' ? (
+          <div style={{ animation: 'fadeIn 1s ease-in' }}>
+            <div 
+              className={`breathing-circle ${phase === 'processing' ? 'processing-pulse' : ''}`}
+              style={{ 
+                transform: `scale(${1 + volume / 100})`,
+                margin: '0 auto 100px'
+              }} 
+            />
+            
+            <div className="diagnosis-guide">
+              {phase === 'idle' && "버튼을 누르고 어디가 아픈지 말해줘"}
+              {phase === 'recording' && "가은쌤이 듣고 있어... (말하는 중)"}
+              {phase === 'processing' && <span className="flashing-text">진단 중... 가은쌤 분석 중...</span>}
+            </div>
 
-          <button 
-            className={`mic-button ${phase === 'recording' ? 'active' : ''}`}
-            onMouseDown={startListening}
-            onMouseUp={handleStop}
-            onTouchStart={startListening}
-            onTouchEnd={handleStop}
-            disabled={phase === 'processing'}
-          >
-            {phase === 'recording' ? "🎤" : "🎙️"}
-          </button>
-        </>
-      ) : (
-        <div className="finish-container">
-          <div className="message-content" style={{ fontSize: '1.2rem', color: '#ffe87f', whiteSpace: 'pre-wrap' }}>
-            {randomResult}
+            <button 
+              className={`mic-button ${phase === 'recording' ? 'active' : ''}`}
+              onMouseDown={startListening}
+              onMouseUp={handleStop}
+              onTouchStart={startListening}
+              onTouchEnd={handleStop}
+              disabled={phase === 'processing'}
+            >
+              {phase === 'recording' ? "🎤" : "🎙️"}
+            </button>
           </div>
-          <button className="bored-trigger-btn" onClick={onBack} style={{ marginTop: '40px' }}>
-            돌아가기
-          </button>
-        </div>
+        ) : (
+          <div className="finish-container">
+            <div className="message-content" style={{ fontSize: '1.2rem', color: '#ffe87f', whiteSpace: 'pre-wrap' }}>
+              {randomResult}
+            </div>
+            <button className="bored-trigger-btn" onClick={onBack} style={{ marginTop: '40px' }}>
+              돌아가기
+            </button>
+          </div>
+        )
       )}
     </div>
   );
@@ -1303,6 +1347,7 @@ const [showTmiModal, setShowTmiModal] = useState(false);
       {showScratch && (
         <div 
           className="full-screen-modal"
+          style={{ background: 'rgba(5, 7, 13, 0.98)'}}
           onClick={() => setShowScratch(false)}
         >
           <div onClick={(e) => e.stopPropagation()}>
@@ -1324,7 +1369,7 @@ const [showTmiModal, setShowTmiModal] = useState(false);
       {showDiagnosis && (
         <div 
           className="full-screen-modal"
-          style={{ background: 'rgba(5, 7, 13, 0.98)', zIndex: 200 }}
+          style={{background: 'rgba(5, 7, 13, 0.98)', zIndex: 200 }}
         >
           <GaeunDiagnosis onBack={() => setShowDiagnosis(false)} />
         </div>
