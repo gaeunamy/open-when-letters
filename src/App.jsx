@@ -1336,8 +1336,8 @@ const [showTmiModal, setShowTmiModal] = useState(false);
             <button onClick={handleAnswer}>NO</button>
           </div>
         </div>
-      )}
-
+      )} 
+      
       {showHiddenPhoto && (
         <div className="photo-modal active" onClick={handleReset}>
            <div 
@@ -1361,9 +1361,16 @@ const [showTmiModal, setShowTmiModal] = useState(false);
              
              <div className="photo-caption">
                보고 싶었지?
-               <br/>
-               <span style={{fontSize: '0.8rem', opacity: 0.7}}>화면을 누르면 닫혀요</span>
              </div>
+           </div>
+           <div style={{
+             position: 'absolute',
+             bottom: '40px',
+             color: 'rgba(255, 255, 255, 0.5)',
+             fontSize: '1rem',
+             opacity: 0.7
+           }}>
+             화면을 터치하면 돌아갑니다
            </div>
         </div>
       )} 
@@ -1455,7 +1462,7 @@ const [showTmiModal, setShowTmiModal] = useState(false);
       )}
       
       <button
-        className={`moon-button ${selectedStar && !showHugging && !showScratch && !showBreathing ? "active" : ""}`}
+        className={`moon-button ${selectedStar && !showHugging && !showScratch && !showBreathing && !showHiddenPhoto ? "active" : ""}`}
         onClick={handleReset}
         aria-label="초기 화면으로 돌아가기"
       />
