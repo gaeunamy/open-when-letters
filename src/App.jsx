@@ -664,7 +664,11 @@ const handleCollectStars = () => {
   localStorage.removeItem('stars'); // 저장소에서 삭제
 
   setShowStarCollectModal(false);
-  setShowCollectionCompleteModal(true);
+  
+  setTimeout(() => {
+    setShowCollectionCompleteModal(true);
+  }, 1000);
+
   setShowStarLetter(false); // 편지지도 닫기
 };
 
@@ -1173,7 +1177,7 @@ const [showTmiModal, setShowTmiModal] = useState(false);
 
                     setTimeout(() => {
                       setShowBoredMenu(true);
-                    }, 100);
+                    }, 1000);
                   }}
                 >
                   여전히 심심하다면?
