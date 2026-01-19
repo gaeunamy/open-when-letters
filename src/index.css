@@ -1551,7 +1551,3 @@ button, .nav-btn, .moon-button, .diagnosis-btn, .bored-trigger-btn {
   opacity: 1;      /* 투명도 100%로 고정*/
   transform: scale(1); /* 크기 고정 */
 }
-
-canvas {
-  pointer-events: none;
-}
