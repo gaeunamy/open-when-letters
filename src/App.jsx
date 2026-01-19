@@ -134,7 +134,7 @@ const GaeunDiagnosis = ({ onBack }) => {
       // (3) 4초 뒤(사라진 후) 다음 단계로 이동
       const nextPhaseTimer = setTimeout(() => {
         setPhase('idle');
-      }, 4000);
+      }, 4500);
 
       return () => {
         clearTimeout(fadeInTimer);
@@ -1150,7 +1150,7 @@ const [showTmiModal, setShowTmiModal] = useState(false);
                   className="bored-trigger-btn" 
                   onClick={() => setShowScratch(true)}
                 >
-                  행운의 스크래치 카드 🎴
+                  행운의 스크래치 카드 🍀
                 </button>
               </div>
             )} 
