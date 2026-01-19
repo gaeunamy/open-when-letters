@@ -505,14 +505,8 @@ const stars = [
   { id: 25, x: 32, y: 50, neon: false }, // 왼쪽 아래
   { id: 26, x: 78, y: 50, neon: false }, // 오른쪽 아래
   { id: 27, x: 5, y: 47, neon: false },  // 왼쪽 구석
-  //{ id: 28, x: 92, y: 53, neon: false }, // 오른쪽 구석
-  //{ id: 29, x: 42, y: 58, neon: false }, // 중앙 하단
   { id: 30, x: 90, y: 45, neon: false }, // 오른쪽 하단
-  //{ id: 31, x: 20, y: 62, neon: false }, // 왼쪽 하단
   { id: 32, x: 50, y: 38, neon: false }, // 중앙 상단 빈 곳 채움
-  //{ id: 33, x: 90, y: 32, neon: false }, // 오른쪽 상단 빈 곳 채움
-  //{ id: 34, x: 4, y: 35, neon: false },  // 왼쪽 상단 빈 곳 채움
-  //{ id: 35, x: 36, y: 65, neon: false }, // 가장 아래쪽
 ];
 
 const ariesPathIds = [5, 6, 9, 13];
@@ -558,7 +552,6 @@ const praiseData = {
 };
 
 // 사진 파일 목록
-// [Vite 버전으로 수정된 이미지 목록]
 const myPhotos = [
   import.meta.env.VITE_PHOTO_1,
   import.meta.env.VITE_PHOTO_2,
@@ -727,7 +720,6 @@ const [showTmiModal, setShowTmiModal] = useState(false);
     const now = new Date();
     const currentMonth = now.getMonth();
     const currentDay = now.getDate(); 
-    //return true; 
     return currentMonth === 3 && currentDay <= 12;
   });
 
@@ -1269,17 +1261,7 @@ const [showTmiModal, setShowTmiModal] = useState(false);
       
       {showHugging && (
         <div 
-          style={{
-            position: 'fixed',
-            top: 0, left: 0,
-            width: '100%', height: '100%',
-            background: 'rgba(5, 7, 13, 0.95)',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 100
-          }}
+          className="full-screen-modal"
           onClick={() => setShowHugging(false)}
         >
           <div onClick={(e) => e.stopPropagation()}>
@@ -1300,17 +1282,7 @@ const [showTmiModal, setShowTmiModal] = useState(false);
       
       {showScratch && (
         <div 
-          style={{
-            position: 'fixed',
-            top: 0, left: 0,
-            width: '100%', height: '100%',
-            background: 'rgba(5, 7, 13, 0.95)',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 100
-          }}
+          className="full-screen-modal"
           onClick={() => setShowScratch(false)}
         >
           <div onClick={(e) => e.stopPropagation()}>
@@ -1330,11 +1302,10 @@ const [showTmiModal, setShowTmiModal] = useState(false);
       )} 
       
       {showDiagnosis && (
-        <div style={{
-          position: 'fixed', top: 0, left: 0, width: '100%', height: '100%',
-          background: 'rgba(5, 7, 13, 0.98)', display: 'flex', alignItems: 'center', justifyContent: 'center',
-          zIndex: 200
-        }}>
+        <div 
+          className="full-screen-modal"
+          style={{ background: 'rgba(5, 7, 13, 0.98)', zIndex: 200 }}
+        >
           <GaeunDiagnosis onBack={() => setShowDiagnosis(false)} />
         </div>
       )}
@@ -1441,18 +1412,8 @@ const [showTmiModal, setShowTmiModal] = useState(false);
       
       {showBreathing && (
         <div 
-          style={{
-            position: 'fixed',
-            top: 0, left: 0,
-            width: '100%', height: '100%',
-            background: 'rgba(5, 7, 13, 0.95)',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            paddingTop: '60px',
-            zIndex: 100
-          }}
+          className="full-screen-modal"
+          style={{ paddingTop: '60px' }}
           onClick={() => setShowBreathing(false)}
         >
           <BreathingCircle />
