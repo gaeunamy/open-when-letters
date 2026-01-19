@@ -667,7 +667,7 @@ const handleCollectStars = () => {
   
   setTimeout(() => {
     setShowCollectionCompleteModal(true);
-  }, 1000);
+  }, 500);
 
   setShowStarLetter(false); // 편지지도 닫기
 };
