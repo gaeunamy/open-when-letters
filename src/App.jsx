@@ -1386,7 +1386,10 @@ const [showTmiModal, setShowTmiModal] = useState(false);
             </div>
           </div>
           <div className="hidden-buttons">
-            <button onClick={() => setShowKaraoke(false)}>나가기</button>
+            <button onClick={(e) => {
+               e.currentTarget.blur();
+                setShowKaraoke(false);
+            }}>나가기</button>
           </div>
         </div>
       )}
