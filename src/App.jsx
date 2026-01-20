@@ -1161,7 +1161,6 @@ const [showTmiModal, setShowTmiModal] = useState(false);
               position: 'absolute',
               left: `${star.x}%`, 
               top: `${star.y}%`,
-              transform: 'translate(-50%, -50%)'
             }}
             onClick={() => alert(`가은이에게 보낸 별: ${star.message}`)} // 클릭 시 메시지 확인
           />
