@@ -371,7 +371,13 @@ const HuggingButton = () => {
       
       {/* 색감이 퍼지는 버스트 효과 레이어 */}
       <div className="color-burst-container">
-        <div className={`color-burst-effect ${completed && !showFinishText ? 'active' : ''}`} />
+        <div 
+          className={`color-burst-effect ${completed && !showFinishText ? 'active' : ''}`} 
+          style={{
+            // [수정] 포옹 기능에서만 분홍색 하트 파동이 퍼지도록 인라인 스타일 적용
+            background: 'radial-gradient(circle, rgba(255, 122, 144, 0.9) 0%, rgba(255, 122, 144, 0.4) 50%, transparent 100%)'
+          }}
+        />
       </div>
 
       {!completed ? (
