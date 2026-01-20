@@ -768,6 +768,13 @@ button, .nav-btn, .moon-button, .diagnosis-btn, .bored-trigger-btn { touch-actio
     font-weight: normal !important;
   }
 
+  .nav-btn:hover {
+    background: rgba(255, 255, 255, 0.15) !important;
+    color: white !important; 
+    border-color: rgba(255, 255, 255, 0.3) !important;
+    transform: none !important;
+  }
+
   .bored-trigger-btn:hover, 
   .bored-trigger-btn:focus,
   .bored-trigger-btn:focus-visible {
