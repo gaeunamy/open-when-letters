@@ -113,7 +113,7 @@ const CourageAudio = ({ onPlayStatusChange }) => { // 1. props 추가
 
   return (
     <div className="audio-wrapper">
-      <div className="audio-label">🎧 Play for Courage</div>
+      <div className="audio-label">🎧 용기가 필요한 너에게</div>
       
       {/* 별 입자 효과만 */}
       {isPlaying && (
@@ -140,7 +140,7 @@ const CourageAudio = ({ onPlayStatusChange }) => { // 1. props 추가
         onPause={handlePause}
         onEnded={handlePause}
       >
-        <source src="/sound1.mp3" type="audio/mpeg" />
+        <source src="/voice1.m4a" type="audio/mp4" />
         브라우저가 오디오를 지원하지 않습니다.
       </audio>
     </div>
