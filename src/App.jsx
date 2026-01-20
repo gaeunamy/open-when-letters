@@ -97,6 +97,55 @@ const FireworkCanvas = () => {
   );
 };
 
+const CourageAudio = ({ onPlayStatusChange }) => { // 1. props 추가
+  const [isPlaying, setIsPlaying] = useState(false);
+  const audioRef = useRef(null);
+
+  const handlePlay = () => {
+    setIsPlaying(true);
+    if (onPlayStatusChange) onPlayStatusChange(true); // 2. 재생 알림
+  };
+
+  const handlePause = () => {
+    setIsPlaying(false);
+    if (onPlayStatusChange) onPlayStatusChange(false); // 3. 정지 알림
+  };
+
+  return (
+    <div className="audio-wrapper">
+      <div className="audio-label">🎧 Play for Courage</div>
+      
+      {/* 별 입자 효과만 */}
+      {isPlaying && (
+        <div className="audio-effects">
+          {[...Array(12)].map((_, i) => (
+            <div 
+              key={i} 
+              className="star-particle"
+              style={{
+                left: `${Math.random() * 100}%`,
+                animationDelay: `${Math.random() * 3}s`,
+                animationDuration: `${3 + Math.random() * 2}s`
+              }}
+            />
+          ))}
+        </div>
+      )}
+      
+      <audio 
+        ref={audioRef}
+        controls 
+        className="custom-audio"
+        onPlay={handlePlay}
+        onPause={handlePause}
+        onEnded={handlePause}
+      >
+        <source src="/sound1.mp3" type="audio/mpeg" />
+        브라우저가 오디오를 지원하지 않습니다.
+      </audio>
+    </div>
+  );
+};
 const GaeunDiagnosis = ({ onBack }) => {
   // 1. 초기 상태 설정
   const [phase, setPhase] = useState('intro'); 
@@ -620,6 +669,9 @@ useEffect(() => {
 // 사용법 모달 상태 
 const [showGuide, setShowGuide] = useState(false);
 
+// 오디오 재생 상태 관리
+const [isAudioPlaying, setIsAudioPlaying] = useState(false);
+
 // 힘들 때
 const [showBreathing, setShowBreathing] = useState(false);
 
@@ -1122,11 +1174,13 @@ const [showTmiModal, setShowTmiModal] = useState(false);
         }}
       />
 
+      <div className={`dim-overlay ${isAudioPlaying ? 'active' : ''}`} />
+
       {/* 기본 메시지 모달 */}
       {selectedStar && !showHiddenQuestion && !showHiddenPhoto && !showBoredMenu && 
       !showStarLetter && !showStarCollectModal && !showCollectionCompleteModal 
       && !showBalanceModal && !showTmiModal && !showKaraoke && (
-        <div className={`message-modal active`}>
+        <div className={`message-modal active ${isAudioPlaying ? 'audio-playing' : ''}`}>
           <div className="message-title">{selectedStar.message}</div>
           <div className="message-content">
             {/* 15번 별(칭찬)이 아닐 때만 기본 메시지를 보여줌 */}
@@ -1134,14 +1188,8 @@ const [showTmiModal, setShowTmiModal] = useState(false);
 
             {/* [추가 1] 용기가 필요할 때(ID: 13) : 오디오 플레이어 */}
             {selectedStar.id === 13 && (
-              <div className="audio-wrapper">
-                <div className="audio-label">🎧 Play for Courage</div>
-                <audio controls className="custom-audio">
-                  <source src="/voice.mp3" type="audio/mpeg" />
-                  브라우저가 오디오를 지원하지 않습니다.
-                </audio>
-              </div>
-            )} 
+              <CourageAudio onPlayStatusChange={setIsAudioPlaying} />
+            )}
 
             {/* 울적할 때(ID: 12) : 스크래치 카드 버튼 */}
             {selectedStar.id === 12 && (

@@ -474,11 +474,53 @@ button, .star-wrapper, .scratch-card, .nav-btn, .moon-button {
 .bored-menu-list button:hover { background: #ffe87f; color: #0b1d3a; font-weight: bold; transform: scale(1.05); }
 
 /* 오디오 감싸는 박스 */
-.audio-wrapper { margin-top: 25px; display: flex; flex-direction: column; align-items: center; gap: 10px; width: 100%; }
+.audio-wrapper { margin-top: 25px; display: flex; flex-direction: column; align-items: center; gap: 10px; width: 100%;}
 .audio-label { color: #ffe87f; font-size: 0.9rem; letter-spacing: 1px; opacity: 0.8; margin-bottom: 5px; }
 .custom-audio { width: 100%; max-width: 280px; height: 40px; outline: none; filter: invert(1); opacity: 0.8; transition: opacity 0.3s; cursor: pointer; }
 .custom-audio::-webkit-media-controls-enclosure { background-color: transparent !important; box-shadow: none !important; }
 .custom-audio:hover { opacity: 1; }
+
+/* 오디오 효과 컨테이너 */
+.audio-effects {
+  position: absolute;
+  top: 75%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  max-width: 500px;
+  height: 300px;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.star-particle {
+  position: absolute;
+  bottom: 25%;
+  width: 3px;
+  height: 3px;
+  background: #ffe87f;
+  border-radius: 50%;
+  box-shadow: 0 0 6px rgba(255, 232, 127, 0.8);
+  animation: floatUp 4s ease-in-out infinite;
+  opacity: 0;
+}
+
+@keyframes floatUp {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 0;
+  }
+  5% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-200px) scale(0.5);
+    opacity: 0;
+  }
+}
 
 /* 칭찬 섹션 */
 .praise-section { width: 100%; margin-top: 20px; display: flex; flex-direction: column; align-items: center; }
@@ -859,4 +901,36 @@ button, .nav-btn, .moon-button, .diagnosis-btn, .bored-trigger-btn { touch-actio
   color: #ffe87f;
   font-weight: 600;
   font-size: 1.6rem;
+}
+
+/* 오디오 재생 시 숨쉬기 애니메이션 */
+@keyframes audioBreathing {
+  0% { transform: translate(-50%, -50%) scale(1); box-shadow: 0 0 40px rgba(255, 232, 127, 0.4); border-color: rgba(255, 232, 127, 0.3); }
+  50% { transform: translate(-50%, -50%) scale(1.02); box-shadow: 0 0 70px rgba(255, 232, 127, 0.7); border-color: rgba(255, 232, 127, 0.8); }
+  100% { transform: translate(-50%, -50%) scale(1); box-shadow: 0 0 40px rgba(255, 232, 127, 0.4); border-color: rgba(255, 232, 127, 0.3); }
+}
+
+/* 재생 중일 때 모달에 적용될 클래스 */
+.message-modal.audio-playing {
+  animation: audioBreathing 4s ease-in-out infinite; /* 4초 주기로 천천히 숨쉬기 */
+  background: rgba(11, 29, 58, 0.9); /* 배경을 조금 더 진하게 */
+  z-index: 300; /* 가장 위로 */
+
+  transition: all 1s ease;
+  animation-delay: 2s;
+}
+
+/* 재생 중일 때 뒷배경을 어둡게 누르는 오버레이 */
+.dim-overlay {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0);
+  pointer-events: none;
+  transition: background 2s ease, backdrop-filter 1s ease;
+  z-index: 290; /* 모달 바로 아래 */
+}
+
+.dim-overlay.active {
+  background: rgba(0, 0, 0, 0.8); /* 80% 어둡게 */
+  backdrop-filter: blur(3px); /* 뒤에 있는 별들을 살짝 흐리게 */
 }
