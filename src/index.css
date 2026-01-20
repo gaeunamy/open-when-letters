@@ -638,7 +638,7 @@ button, .star-wrapper, .scratch-card {
 .star-letter-modal.hidden { display: none; }
 
 .user-star {
-  position: absolute; width: 0.5px !important; height: 0.5px !important;
+  position: absolute; width: 1.8px !important; height: 1.8px !important;
   background-color: #ffe87f; border-radius: 50%; opacity: 0.6;
   cursor: help; animation: newStarSparkle 4s ease-out;
 }
