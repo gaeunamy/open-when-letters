@@ -691,10 +691,9 @@ button, .nav-btn, .moon-button, .diagnosis-btn, .bored-trigger-btn { touch-actio
     transform: none !important; 
     background: transparent !important; 
     box-shadow: none !important;
-    /* 주의: inherit을 쓰지 않고 아래에서 버튼별로 색상을 직접 지정합니다 */
   }
 
-  /* 2. [핵심] 버튼별 호버 시 색상 강제 고정 (흰색 변함 방지) */
+  /* 2. 버튼별 호버 시 색상 강제 고정 (흰색 변함 방지) */
   
   /* 칭찬 버튼: 터치해도 글자는 노랑, 테두리는 연한 노랑 유지 */
   .praise-grid button:hover {
@@ -708,6 +707,7 @@ button, .nav-btn, .moon-button, .diagnosis-btn, .bored-trigger-btn { touch-actio
   .bored-trigger-btn:hover {
     color: #ffe87f !important;
     border-color: #ffe87f !important;
+    font-weight: normal !important;
   }
 
   /* 3. 꾹 눌렀을 때(Active) 확실한 반응 (노란 배경 + 남색 글씨) */

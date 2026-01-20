@@ -1224,10 +1224,6 @@ const [showTmiModal, setShowTmiModal] = useState(false);
                     e.stopPropagation();
                     e.preventDefault();
                     setShowBoredMenu(true);
-
-                    setTimeout(() => {
-                      setShowBoredMenu(true);
-                    }, 1000);
                   }}
                 >
                   여전히 심심하다면?
@@ -1272,7 +1268,9 @@ const [showTmiModal, setShowTmiModal] = useState(false);
              <button onClick={handleTMI}>
                가으니의 누구도 궁금해 하지 않은 TMI
              </button>
-             <button onClick={handleKaraoke}>
+             <button onClick={handleKaraoke}
+             onMouseEnter={(e) => e.currentTarget.blur()}
+             >
                여기가 바로<br/>퀸크루즈 노래연습장
              </button>
            </div>
