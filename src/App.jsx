@@ -1162,7 +1162,7 @@ const [showTmiModal, setShowTmiModal] = useState(false);
               left: `${star.x}%`, 
               top: `${star.y}%`,
             }}
-            onClick={() => alert(`가은이에게 보낸 별: ${star.message}`)} // 클릭 시 메시지 확인
+            onClick={() => alert(`별의 기억: ${star.message}`)} // 클릭 시 메시지 확인
           />
         ))}
       </div>
