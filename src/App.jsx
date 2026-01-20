@@ -1391,6 +1391,10 @@ const [showTmiModal, setShowTmiModal] = useState(false);
               e.stopPropagation();
               e.currentTarget.blur();
               setShowKaraoke(false);
+
+              setTimeout(() => {
+                setShowKaraoke(false);
+              }, 50);
             }}>나가기</button>
           </div>
         </div>
