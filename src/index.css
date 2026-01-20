@@ -348,7 +348,7 @@ button, .star-wrapper, .scratch-card, .nav-btn, .moon-button {
   color: #ffe87f;
   padding: 10px 40px;
   border-radius: 30px;
-  font-size: 1.0rem;
+  font-size: 0.9rem;
   cursor: pointer;
   transition: all 0.3s;
 }
@@ -364,7 +364,7 @@ button, .star-wrapper, .scratch-card, .nav-btn, .moon-button {
   align-items: center;
   justify-content: center;
   pointer-events: auto;
-  background: rgba(0, 0, 0, 0.8);
+  background: rgba(5, 7, 13, 0.8);
   backdrop-filter: blur(5px);
 }
 

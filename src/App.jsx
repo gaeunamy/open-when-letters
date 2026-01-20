@@ -1388,7 +1388,7 @@ const [showTmiModal, setShowTmiModal] = useState(false);
             position: 'absolute',
             bottom: '40px',
             color: 'rgba(255, 255, 255, 0.5)',
-            fontSize: '1rem',
+            fontSize: '0.9rem',
             opacity: 0.7
           }}>
             화면을 터치하면 돌아갑니다
@@ -1410,7 +1410,7 @@ const [showTmiModal, setShowTmiModal] = useState(false);
             position: 'absolute',
             bottom: '40px',
             color: 'rgba(255, 255, 255, 0.5)',
-            fontSize: '1rem',
+            fontSize: '0.9rem',
             opacity: 0.7
           }}>
             화면을 터치하면 돌아갑니다
@@ -1493,7 +1493,7 @@ const [showTmiModal, setShowTmiModal] = useState(false);
              position: 'absolute',
              bottom: '40px',
              color: 'rgba(255, 255, 255, 0.5)',
-             fontSize: '1rem',
+             fontSize: '0.9rem',
              opacity: 0.7
            }}>
              화면을 터치하면 돌아갑니다
@@ -1589,7 +1589,8 @@ const [showTmiModal, setShowTmiModal] = useState(false);
       )}
       
       <button
-        className={`moon-button ${selectedStar && !showHugging && !showScratch && !showBreathing && !showHiddenPhoto ? "active" : ""}`}
+        className={`moon-button ${selectedStar && !showHugging && !showScratch && !showBreathing && !showHiddenPhoto &&
+        !showBalanceModal && !showTmiModal && !showKaraoke? "active" : ""}`}
         onClick={handleReset}
         aria-label="초기 화면으로 돌아가기"
       />
