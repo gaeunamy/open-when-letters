@@ -638,7 +638,7 @@ button, .star-wrapper, .scratch-card {
 .user-star {
   position: absolute; width: 1.8px !important; height: 1.8px !important;
   background-color: #ffe87f; border-radius: 50%; opacity: 0.6;
-  cursor: help; animation: newStarSparkle 4s ease-out;
+  cursor: help; animation: newStarSparkle 6s ease-out;
 }
 
 .star-paper {
