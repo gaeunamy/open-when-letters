@@ -536,8 +536,6 @@ button, .star-wrapper, .scratch-card {
 .karaoke-modal { width: 90%; max-width: 400px; }
 .karaoke-title { font-size: 1.5rem; margin-bottom: 25px; }
 .karaoke-content { display: flex; flex-direction: column; align-items: center; gap: 15px; width: 100%; }
-.karaoke-audio { width: 100%; max-width: 320px; height: 45px; outline: none; filter: invert(1); opacity: 0.9; transition: opacity 0.3s; }
-.karaoke-audio:hover { opacity: 1; }
 .karaoke-subtitle { color: rgba(255, 232, 127, 0.8); font-size: 0.95rem; text-align: center; margin-top: 10px; }
 
 /* 하트 관련 */
