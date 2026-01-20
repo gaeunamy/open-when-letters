@@ -1222,7 +1222,7 @@ const [showTmiModal, setShowTmiModal] = useState(false);
                   className="bored-trigger-btn" 
                   onClick={(e) => {
                     e.stopPropagation();
-                    e.preventDefault();
+                    e.currentTarget.blur();
                     setShowBoredMenu(true);
                   }}
                 >

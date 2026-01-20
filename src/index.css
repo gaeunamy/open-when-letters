@@ -710,6 +710,12 @@ button, .nav-btn, .moon-button, .diagnosis-btn, .bored-trigger-btn { touch-actio
     font-weight: normal !important;
   }
 
+  .bored-menu-list button:focus,
+  .bored-menu-list button:active {
+  font-weight: normal !important;
+  outline: none;
+  }
+
   /* 3. 꾹 눌렀을 때(Active) 확실한 반응 (노란 배경 + 남색 글씨) */
   button:active, 
   .nav-btn:active, 
