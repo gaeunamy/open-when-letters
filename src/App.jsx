@@ -123,7 +123,7 @@ const CourageAudio = ({ onPlayStatusChange }) => { // 1. props 추가
               key={i} 
               className="star-particle"
               style={{
-                left: `${Math.random() * 100}%`,
+                left: `${5 + Math.random() * 90}%`,
                 animationDelay: `${Math.random() * 3}s`,
                 animationDuration: `${3 + Math.random() * 2}s`
               }}
@@ -1554,7 +1554,8 @@ const [showTmiModal, setShowTmiModal] = useState(false);
             position: 'absolute',
             bottom: '40px',
             color: 'rgba(255, 255, 255, 0.5)',
-            fontSize: '0.9rem'
+            fontSize: '0.9rem',
+            opacity: 0.7
           }}>
             화면을 터치하면 돌아갑니다
           </div>
