@@ -421,7 +421,14 @@ button, .star-wrapper, .scratch-card {
   margin-top: 15px;
   transition: all 0.3s;
 }
-.bored-trigger-btn:hover { background: rgba(255, 232, 127, 0.2); border-color: #ffe87f; color: #ffe87f; }
+
+@media (hover: hover) {
+  .bored-trigger-btn:hover { 
+    background: rgba(255, 232, 127, 0.2); 
+    border-color: #ffe87f; 
+    color: #ffe87f; 
+  }
+}
 
 /* 심심 메뉴 모달 */
 .bored-menu-modal {
