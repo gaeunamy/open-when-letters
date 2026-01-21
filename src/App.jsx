@@ -334,16 +334,18 @@ const HuggingButton = () => {
     
     if (burstTimerRef.current) clearTimeout(burstTimerRef.current);
   
-    // 1. 반복될 로직을 별도의 함수로 만듭니다.
-    const executePulse = () => {
-      if (navigator.vibrate) {
-        navigator.vibrate([70, 100, 70]);
-      }
-      count += 0.8; // 현재 만족하신 속도 유지
+    intervalRef.current = setInterval(() => {
+      count += 0.1; 
       setProgress(count);
-      
-      if (count >= 4) {
-        if (intervalRef.current) clearInterval(intervalRef.current);
+
+      if (Math.round(count * 10) % 8 === 0) {
+        if (navigator.vibrate) {
+          navigator.vibrate([70, 100, 70]);
+        }
+      }
+  
+      if (count >= 3.2) {
+        clearInterval(intervalRef.current);
         setCompleted(true);
         setPressing(false);
   
@@ -351,13 +353,7 @@ const HuggingButton = () => {
           setShowFinishText(true);
         }, 800); 
       }
-    };
-  
-    // 2. 함수를 누르자마자 즉시 한 번 실행합니다 (이게 핵심!)
-    executePulse();
-  
-    // 3. 그 후에 800ms 간격으로 반복을 시작합니다.
-    intervalRef.current = setInterval(executePulse, 800);
+    }, 100);
   };
 
   const handleEnd = () => {
