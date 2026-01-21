@@ -332,7 +332,7 @@ html.android .message-content {
   vector-effect: non-scaling-stroke; 
   stroke-dasharray: 40;
   stroke-dashoffset: 40;
-  animation: drawPath 40s ease-in-out forwards;
+  animation: drawPath 80s ease-in-out forwards;
   filter: drop-shadow(0 0 2px rgba(255, 232, 127, 0.8));
 }
 

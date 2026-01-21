@@ -591,7 +591,7 @@ const stars = [
   { id: 11, x: 10, y: 28, neon: true, message: "힘들 때", fullMessage: "거기서 적응하느라 얼마나 애쓰고 있는지 다 알아. 오늘만큼은 씩씩한 척 말고 그냥 투정 부려도 돼. 다 들어줄게. 고생했어 정말." },
   { id: 12, x: 34, y: 30, neon: true, message: "울적할 때", fullMessage: "기분이 축 처지는 날이네. 이럴 땐 맛있는 거 먹고 따뜻한 이불 속에 쏙 들어가. 내일은 분명 오늘보다 더 괜찮은 하루가 될 거야." },
   { id: 13, x: 60, y: 27, neon: true, message: "용기가 필요할 때", fullMessage: "겁나고 두려울 수 있어. 당연한 거야. 그래도 하나만 기억해줘. 넌 내가 아는 사람 중 제일 단단하고 멋있는 친구야. 망설이지 말고 질러! " },
-  { id: 15, x: 22, y: 34, neon: true, message: "칭찬 받고 싶을 때", fullMessage: "타지에서 혼자 밥 챙겨 먹고, 공부하고, 살아가는 것만으로도 넌 진짜 대단해. 오늘 하루도 무사히 보낸 너한테 박수~~!" },
+  { id: 15, x: 22, y: 34, neon: true, message: "칭찬받고 싶을 때", fullMessage: "타지에서 혼자 밥 챙겨 먹고, 공부하고, 살아가는 것만으로도 넌 진짜 대단해. 오늘 하루도 무사히 보낸 너한테 박수~~!" },
   { id: 16, x: 46, y: 36, neon: true, message: "몸이 아플 때", fullMessage: "아픈 게 제일 서러운데 어떡해... 약은 먹었어? 입맛 없어도 밥 꼭 챙겨 먹고. 푹 쉬고 얼른 나아라♡" },
   { id: 17, x: 70, y: 33, neon: true, message: "잠이 안 올 때", fullMessage: "생각이 너무 많아서 그래? 별에게 오늘 하루 있었던 일, 하고 싶은 말 다 전해봐. 네 이야기가 밤하늘을 더욱 빛나게 할 거야." },
   { id: 8, x: 30, y: 22, neon: false },
@@ -837,7 +837,7 @@ const [showTmiModal, setShowTmiModal] = useState(false);
   const [touchStart, setTouchStart] = useState(0);
   const [touchEnd, setTouchEnd] = useState(0);
 
-  const activationTimings = [0, 2020, 3110, 3800];
+  const activationTimings = [0, 4040, 6320, 8000];
 
   const [isAriesSeason] = useState(() => {
     const now = new Date();
@@ -1092,8 +1092,17 @@ const [showTmiModal, setShowTmiModal] = useState(false);
   return (
     <div className="sky">
       <div className="intro-text">
-        유난히 반짝이는 별을 찾아보세요.<br/>
-        당신을 위한 따뜻한 이야기가 기다리고 있습니다.
+        {isAriesSeason ? (
+          <>
+            오늘 밤은 특별한 별자리가 그려집니다.<br/>
+            천천히 반짝이는 빛의 이야기를 따라가 보세요.
+          </>
+        ) : (
+          <>
+            유난히 반짝이는 별을 찾아보세요.<br/>
+            당신을 위한 따뜻한 이야기가 기다리고 있습니다.
+          </>
+        )}
       </div>
 
       {showConstellation && (
@@ -1106,7 +1115,7 @@ const [showTmiModal, setShowTmiModal] = useState(false);
             pathLength="1"
             d={getPathD()} 
             className="constellation-path" 
-            style={{ animation: `drawPath 40s linear forwards` }}
+            style={{ animation: `drawPath 80s linear forwards` }}
           />
         </svg>
       )} 
