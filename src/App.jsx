@@ -1619,7 +1619,7 @@ const [showTmiModal, setShowTmiModal] = useState(false);
       <div className="footer-copyright">Developed by Ganiii</div>
 
       <button 
-        className={`guide-button ${selectedStar || showHiddenQuestion || showHiddenPhoto || showBoredMenu || showStarLetter || showDiagnosis || showHugging || showScratch ? "hidden" : ""} ${showGuide ? "paused" : ""}`}
+        className={`guide-button ${selectedStar || showHiddenQuestion || showHiddenPhoto || showBoredMenu || showStarLetter || showDiagnosis || showHugging || showScratch || showGuide ? "hidden" : ""}`}
         onClick={(e) => {
           e.stopPropagation();
           setShowGuide(true);
