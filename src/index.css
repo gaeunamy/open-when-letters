@@ -25,12 +25,26 @@ html, body {
   width: 100%;
   height: 100%;
   font-size: 16px !important; /* 모바일 가독성 고정 */
-  font-family: system-ui, -apple-system, BlinkMacSystemFont;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   background: #05070d;
   overflow: hidden; /* 전체 스크롤 방지 */
 
   /* 터치 시 순간적으로 발생하는 파란색 하이라이트 제거 */
   -webkit-tap-highlight-color: transparent;
+  
+  /* 폰트 렌더링 최적화 */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* 안드로이드 기기 전용 폰트 크기 조정 */
+html.android {
+  font-size: 14.5px !important;
+}
+
+/* iOS 기기는 기본값 유지 */
+html.ios {
+  font-size: 16px !important;
 }
 
 /* 3. [입력 요소] 폰트 상속 및 예외 처리 (별 편지 작성용) */
