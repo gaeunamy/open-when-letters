@@ -1242,25 +1242,24 @@ const [showTmiModal, setShowTmiModal] = useState(false);
               </div>
             )}
             
-            {/* [최종 수정] 칭찬 받고 싶을 때(ID: 15) 섹션 */}
+            {/* 칭찬 받고 싶을 때(ID: 15) 섹션 */}
             {selectedStar.id === 15 && (
               <div className="praise-section">
-                {/* activePraise가 있을 때만 메시지를 보여줍니다. 
-                  원래 있던 selectedStar.fullMessage 부분은 삭제했습니다.
-                */}
                 <div className="message-content" style={{ 
                   whiteSpace: 'pre-wrap', 
                   marginBottom: '30px', 
                   minHeight: '120px', 
                   fontSize: '1rem',
                   display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center'
+                  alignItems: 'flex-start',
+                  justifyContent: 'flex-start',
+                  paddingTop: '10px',
+                  textAlign: 'center'
                 }}>
                   {activePraise ? (
-                    praiseData[activePraise]
+                    <div style={{ width: '100%' }}>{praiseData[activePraise]}</div>
                   ) : (
-                    <span style={{ opacity: 0.5, fontSize: '0.9rem' }}>
+                    <span style={{ opacity: 0.5, fontSize: '0.9rem', margin: 'auto'}}>
                       아래 키워드 중 하나를 선택해봐!
                     </span>
                   )}
