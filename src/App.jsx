@@ -1198,7 +1198,7 @@ const [showTmiModal, setShowTmiModal] = useState(false);
       {selectedStar && !showHiddenQuestion && !showHiddenPhoto && !showBoredMenu && 
       !showStarLetter && !showStarCollectModal && !showCollectionCompleteModal 
       && !showBalanceModal && !showTmiModal && !showKaraoke && (
-        <div className={`message-modal active ${isAudioPlaying ? 'audio-playing' : ''}`}>
+        <div className={`message-modal active ${isAudioPlaying ? 'audio-playing' : ''} ${selectedStar.id === 15 ? 'praise-active' : ''}`}>
           <div className="message-title">{selectedStar.message}</div>
           <div className="message-content">
             {/* 15번 별(칭찬)이 아닐 때만 기본 메시지를 보여줌 */}

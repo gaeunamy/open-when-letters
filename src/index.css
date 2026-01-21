@@ -276,6 +276,8 @@ button, .star-wrapper, .scratch-card, .nav-btn, .moon-button {
   padding: 35px 25px;
 }
 .message-modal.active { opacity: 1; transform: translate(-50%, -50%) scale(1); pointer-events: auto; }
+/* 칭찬 섹션 전용: 달 버튼과의 간격을 위해 위치 조정 */
+.message-modal.praise-active { top: 55%; }
 .message-title { color: #ffe87f; font-size: 1.3rem; font-weight: 600; margin-bottom: 20px; text-align: center; font-weight: 700; margin-bottom: 15px;}
 .message-content { color: #e8f4ff; font-size: 1rem; line-height: 1.6; text-align: center; word-break: keep-all;}
 
