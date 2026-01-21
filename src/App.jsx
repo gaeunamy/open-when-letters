@@ -336,7 +336,7 @@ const HuggingButton = () => {
 
     intervalRef.current = setInterval(() => {
       if (navigator.vibrate) {
-        navigator.vibrate(40); 
+        navigator.vibrate([70, 100, 70]);
       }
       
       count += 0.1;
@@ -352,7 +352,7 @@ const HuggingButton = () => {
           setShowFinishText(true);
         }, 800); 
       }
-    }, 100);
+    }, 800);
   };
 
   const handleEnd = () => {
