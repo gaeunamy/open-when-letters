@@ -333,26 +333,31 @@ const HuggingButton = () => {
     let count = 0;
     
     if (burstTimerRef.current) clearTimeout(burstTimerRef.current);
-
-    intervalRef.current = setInterval(() => {
+  
+    // 1. 반복될 로직을 별도의 함수로 만듭니다.
+    const executePulse = () => {
       if (navigator.vibrate) {
         navigator.vibrate([70, 100, 70]);
       }
-      
-      count += 0.1;
+      count += 0.8; // 현재 만족하신 속도 유지
       setProgress(count);
       
-      if (count >= 3) {
-        clearInterval(intervalRef.current);
+      if (count >= 4) {
+        if (intervalRef.current) clearInterval(intervalRef.current);
         setCompleted(true);
         setPressing(false);
-
-        // 3초 완료 시점에 버스트 효과를 보여주고 0.8초 뒤 멘트 표시
+  
         burstTimerRef.current = setTimeout(() => {
           setShowFinishText(true);
         }, 800); 
       }
-    }, 800);
+    };
+  
+    // 2. 함수를 누르자마자 즉시 한 번 실행합니다 (이게 핵심!)
+    executePulse();
+  
+    // 3. 그 후에 800ms 간격으로 반복을 시작합니다.
+    intervalRef.current = setInterval(executePulse, 800);
   };
 
   const handleEnd = () => {
@@ -1588,7 +1593,7 @@ const [showTmiModal, setShowTmiModal] = useState(false);
       {showCollectionCompleteModal && (
         /* 1. 밸런스 게임/TMI와 같은 너비(90%)를 확보하기 위해 inline style 추가 */
         <div className="hidden-modal active" style={{ width: '90%', maxWidth: '450px' }}>
-          <div className="hidden-text" style={{ whiteSpace: 'nowrap' }}> {/* 2. 한 줄 고정 */}
+          <div className="hidden-text" style={{ whiteSpace: 'nowrap' }}>
             별을 안전하게 수거하였습니다.<br/>
             <span style={{ fontSize: '0.85rem', color: '#ffe87f', opacity: 0.8 }}>
               (수거한 별: {collectedCount}개)
