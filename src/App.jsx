@@ -845,7 +845,7 @@ const [showTmiModal, setShowTmiModal] = useState(false);
     return currentMonth === 3 && currentDay <= 12;
   });
 
-  // [테스트용] 양자리 
+  // // [테스트용] 양자리 
   // const [isAriesSeason] = useState(true);
 
   const starsLayerRef = useRef(null);
@@ -1105,7 +1105,7 @@ const [showTmiModal, setShowTmiModal] = useState(false);
             pathLength="1"
             d={getPathD()} 
             className="constellation-path" 
-            style={{ animation: `drawPath 30s linear forwards` }}
+            style={{ animation: `drawPath 40s linear forwards` }}
           />
         </svg>
       )} 

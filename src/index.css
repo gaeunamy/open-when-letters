@@ -277,7 +277,7 @@ button, .star-wrapper, .scratch-card, .nav-btn, .moon-button {
 }
 .message-modal.active { opacity: 1; transform: translate(-50%, -50%) scale(1); pointer-events: auto; }
 .message-title { color: #ffe87f; font-size: 1.3rem; font-weight: 600; margin-bottom: 20px; text-align: center; font-weight: 700; margin-bottom: 15px;}
-.message-content { color: #e8f4ff; font-size: 1rem; line-height: 1.6; text-align: center; }
+.message-content { color: #e8f4ff; font-size: 1rem; line-height: 1.6; text-align: center; word-break: keep-all;}
 
 html.android .message-title {
   font-size: 1.2rem !important; /* 원래 1.3rem에서 살짝 축소 */
@@ -337,27 +337,6 @@ html.android .message-content {
 @keyframes drawPath {
   to { stroke-dashoffset: 0; }
 }
-
-/* 하단 일일 메시지 컨테이너 */
-.daily-message-container {
-  position: fixed;
-  top: 70%; 
-  left: 50%;
-  transform: translate(-50%, 0);
-  width: 90%;
-  max-width: 600px;
-  text-align: center;
-  color: rgba(255, 255, 255, 0.9);
-  font-size: 1.2rem;
-  line-height: 1.6;
-  text-shadow: 0 0 10px rgba(255, 232, 127, 0.4);
-  word-break: keep-all;
-  opacity: 0;
-  transition: opacity 3s ease-in-out; 
-  pointer-events: none;
-  z-index: 10;
-}
-.daily-message-container.active { opacity: 1; }
 
 /* 히든 질문 모달 */
 .hidden-modal {
