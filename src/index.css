@@ -45,7 +45,7 @@ html, body {
 
 /* 안드로이드 기기 전용 폰트 크기 조정 */
 html.android {
-  font-size: 14px !important; /* 14.5px에서 14px로 더 축소 */
+  font-size: 12px !important;
 }
 
 /* iOS 기기는 기본값 유지 */
