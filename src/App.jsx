@@ -665,6 +665,18 @@ const myPhotos = [
 
 function App() {
 
+  useEffect(() => {
+    // 접속한 기기가 안드로이드인지 확인
+    const ua = navigator.userAgent.toLowerCase();
+    const isAndroid = ua.indexOf("android") > -1;
+    
+    if (isAndroid) {
+      document.documentElement.classList.add('android');
+    } else if (/iphone|ipad|ipod/.test(ua)) {
+      document.documentElement.classList.add('ios');
+    }
+  }, []);
+
 useEffect(() => {
   myPhotos.forEach((src) => {
     const img = new Image();
