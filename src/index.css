@@ -35,11 +35,17 @@ html, body {
   /* 폰트 렌더링 최적화 */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  
+  /* 삼성 인터넷 글꼴 크기 강제 고정 */
+  text-size-adjust: 100% !important;
+  -webkit-text-size-adjust: 100% !important;
+  -moz-text-size-adjust: 100% !important;
+  -ms-text-size-adjust: 100% !important;
 }
 
 /* 안드로이드 기기 전용 폰트 크기 조정 */
 html.android {
-  font-size: 14.5px !important;
+  font-size: 14px !important; /* 14.5px에서 14px로 더 축소 */
 }
 
 /* iOS 기기는 기본값 유지 */
