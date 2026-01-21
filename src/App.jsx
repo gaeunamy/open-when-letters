@@ -1586,8 +1586,9 @@ const [showTmiModal, setShowTmiModal] = useState(false);
       
       {/* 수거 완료 알림 모달 */}
       {showCollectionCompleteModal && (
-        <div className="hidden-modal active">
-          <div className="hidden-text">
+        /* 1. 밸런스 게임/TMI와 같은 너비(90%)를 확보하기 위해 inline style 추가 */
+        <div className="hidden-modal active" style={{ width: '90%', maxWidth: '450px' }}>
+          <div className="hidden-text" style={{ whiteSpace: 'nowrap' }}> {/* 2. 한 줄 고정 */}
             별을 안전하게 수거하였습니다.<br/>
             <span style={{ fontSize: '0.85rem', color: '#ffe87f', opacity: 0.8 }}>
               (수거한 별: {collectedCount}개)
