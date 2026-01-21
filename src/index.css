@@ -498,19 +498,20 @@ html.android .message-content {
 /* 오디오 효과 컨테이너 */
 .audio-effects {
   position: absolute;
-  top: 75%;
+  bottom: 0; /* 하단 끝에 고정 */
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translateX(-50%);
   width: 100%;
   max-width: 500px;
-  height: 300px;
+  height: 250px;
   pointer-events: none;
   z-index: -1;
+  overflow: visible;
 }
 
 .star-particle {
   position: absolute;
-  bottom: 25%;
+  bottom: 0%;
   width: 3px;
   height: 3px;
   background: #ffe87f;
