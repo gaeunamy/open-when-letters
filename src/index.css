@@ -854,13 +854,20 @@ button, .nav-btn, .moon-button, .diagnosis-btn, .bored-trigger-btn { touch-actio
   border-radius: 50%; cursor: pointer; z-index: 150; transition: all 0.5s ease-out;
   display: flex; align-items: center; justify-content: center; touch-action: manipulation; opacity: 0;
   animation: guideAppear 0.8s ease-out 6s forwards, guideTwinkle 3s infinite ease-in-out 6.8s;
+  will-change: transform, opacity;
+  text-shadow: 0 0 15px rgba(255, 232, 127, 0.6), 0 0 25px rgba(255, 232, 127, 0.2);
 }
 
 @keyframes guideAppear { from { opacity: 0; transform: scale(0.8); } to { opacity: 0.5; transform: scale(1); } }
 @keyframes guideTwinkle {
-  0% { opacity: 0.5; text-shadow: 0 0 5px rgba(255, 232, 127, 0.2); transform: scale(1); }
-  50% { opacity: 1; text-shadow: 0 0 15px rgba(255, 232, 127, 0.6), 0 0 25px rgba(255, 232, 127, 0.2); transform: scale(1.05); }
-  100% { opacity: 0.5; text-shadow: 0 0 5px rgba(255, 232, 127, 0.2); transform: scale(1); }
+  0%, 100% { 
+    opacity: 0.5; 
+    transform: scale(1); 
+  }
+  50% { 
+    opacity: 1; 
+    transform: scale(1.05); 
+  }
 }
 .guide-button:hover { animation-play-state: paused; opacity: 1; color: rgba(255, 232, 127, 1); transform: scale(1.1); text-shadow: 0 0 12px rgba(255, 232, 127, 0.8), 0 0 25px rgba(255, 232, 127, 0.4); }
 .guide-button.hidden { opacity: 0; pointer-events: none; animation: none; }
