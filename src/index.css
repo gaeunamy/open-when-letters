@@ -573,7 +573,7 @@ html.android .message-content {
 .tmi-item:last-child { border-bottom: none; color: #ffe87f; font-weight: bold; }
 
 /* 밸런스 게임 모달 */
-.balance-modal { width: 95%; max-width: 500px; max-height: 85vh; display: flex; flex-direction: column; }
+.balance-modal { width: 90%; max-width: 450px; max-height: 80vh; display: flex; flex-direction: column; }
 .balance-title { font-family: 'Georgia', serif; font-size: 1.5rem; letter-spacing: 2px; color: #ffe87f; }
 .balance-scroll-container { flex: 1; overflow-y: auto; padding: 10px; }
 .balance-item { display: flex; flex-direction: column; align-items: center; gap: 10px; margin-bottom: 40px; padding-bottom: 20px; border-bottom: 1px dashed rgba(255, 232, 127, 0.2); }
